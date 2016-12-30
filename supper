@@ -1,5 +1,6 @@
 #!/bin/bash
-  . /home/$USER/.bashrc
+. /home/$USER/.bashrc
+
 # Settings
 SOURCETREE="/home/harry/android/system"
 declare -a DEVICES=( "angler" "falcon" "flounder" "flounder_lte" "serranoltexx" )
@@ -9,7 +10,7 @@ DELETEAFTERUPLOAD=true
 export USER=$(whoami)
 export USE_CCACHE=1
 
-#
+# What even is this
   echo "#################################################"
   echo "#################################################"
   echo "###                                           ###"
@@ -36,11 +37,16 @@ export USE_CCACHE=1
   for DEVICE in "${DEVICES[@]}"; do
 
   # Define log file name
-    MKALOGFILE=$LOGFILEDIR'/cm-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'-mka.txt'
-    LOGFILE=$LOGFILEDIR'/cm-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'-main.txt'
+    MKALOGFILE=$LOGFILEDIR'/lineage-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'-mka.txt'
+    LOGFILE=$LOGFILEDIR'/lineage-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'-main.txt'
 
     echo $(date '+%Y/%m/%d - %H:%M:%S')"  -  Beginning supper for "$DEVICE >> $LOGFILE
 
+    if [ $DEVICE = "angler" || $DEVICE = "flounder" || $DEVICE = "flounder_lte" || $DEVICE = "falcon"]; then
+      export WITH_DEXPREOPT="true"
+    else
+      export WITH_DEXPREOPT="false"
+    fi
   # Load in the brunch and breakfast commands
     echo $(date '+%Y/%m/%d - %H:%M:%S')"  -  Sourcing envsetup.sh" >> $LOGFILE
     source build/envsetup.sh >> $MKALOGFILE
@@ -60,7 +66,7 @@ export USE_CCACHE=1
     md5sum $BUILDZIP >> $LOGFILE
 
   # Generate a new name
-    NEWNAME='cm-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'.zip'
+    NEWNAME='lineage-14.1-'$(date +%Y%m%d)'-UNOFFICIAL-'$DEVICE'.zip'
     echo $(date '+%Y/%m/%d - %H:%M:%S')"  -  New name is to be "$NEWNAME >> $LOGFILE
 
   # Upload the zip and its md5sum to the server
