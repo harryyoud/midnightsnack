@@ -3,7 +3,7 @@
 
 # Settings
 SOURCETREE="/home/harry/android/system"
-declare -a DEVICES=( "angler" "falcon" "flounder" "flounder_lte" "serranoltexx" )
+declare -a DEVICES=( "huashan" "angler" "falcon" "flounder" "flounder_lte" "serranoltexx" )
 SYNCONSTART=true
 LOGFILEDIR="/home/harry/android/system/logs"
 DELETEAFTERUPLOAD=true
@@ -42,11 +42,11 @@ export USE_CCACHE=1
 
     echo $(date '+%Y/%m/%d - %H:%M:%S')"  -  Beginning supper for "$DEVICE >> $LOGFILE
 
-    if [ $DEVICE = "angler" || $DEVICE = "flounder" || $DEVICE = "flounder_lte" || $DEVICE = "falcon"]; then
-      export WITH_DEXPREOPT="true"
-    else
-      export WITH_DEXPREOPT="false"
-    fi
+#    if [ $DEVICE = "angler" || $DEVICE = "flounder" || $DEVICE = "flounder_lte" || $DEVICE = "falcon"]; then
+#      export WITH_DEXPREOPT="true"
+#    else
+#      export WITH_DEXPREOPT="false"
+#    fi
   # Load in the brunch and breakfast commands
     echo $(date '+%Y/%m/%d - %H:%M:%S')"  -  Sourcing envsetup.sh" >> $LOGFILE
     source build/envsetup.sh >> $MKALOGFILE
