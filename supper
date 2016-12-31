@@ -3,7 +3,7 @@
 
 # Settings
 SOURCETREE="/home/harry/android/system"
-declare -a DEVICES=( "huashan" "angler" "falcon" "flounder" "flounder_lte" "serranoltexx" )
+declare -a DEVICES=( "angler" "falcon" "flounder" "flounder_lte" "huashan" "serranoltexx" )
 SYNCONSTART=true
 LOGFILEDIR="/home/harry/android/system/logs"
 DELETEAFTERUPLOAD=true
@@ -91,3 +91,4 @@ export USE_CCACHE=1
 # Tell the user everything is fine
   cowsay -f tux "Yay!"
   echo "Everything looks to have worked. God knows how..."
+
