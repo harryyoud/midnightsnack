@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Needed Settings
   SourceTreeLoc="/home/harry/android/system"
   DeviceList=(  "angler"
@@ -11,10 +9,7 @@
                 "huashan"
                 "klte"
                 "serranoltexx"  )
-  SyncOnStart=true
   LogFileLoc="/home/harry/android/system/logs"
-  DeleteBuildAfterUpload=true
-  UseCcache=true
   RomVariant="cm"
   RomBuildType="userdebug"
   RomVersion="14.1"
@@ -23,4 +18,13 @@
 # Optionals
   BuildTomorrow=true
   StopOnWarn=false
+  SyncOnStart=true
+  UseCcache=true
+  DeleteBuildAfterUpload=true
+
 # SSH Upload
+  SSHUpload=true
+    SSHHost=harryyoud.co.uk
+    SSHUser=harryyoud
+    SSHPort=22
+    SSHDirectory=/home/harryyoud/public_html/lineageos/downloads
