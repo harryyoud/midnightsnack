@@ -35,17 +35,17 @@ HandleWarn() {
 
 LogCommandMake() {
   MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
-  if [ -w $MakeLogFile ]
+  if [ -w $MakeLogFile ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]
+  if [ -z "$2" ]; then
     if [ "$2" = "a" ]; then
       "$1" >> "$MakeLogFile" 2>&1
     elif [ "$2" = "r" ]; then
       "$1" >  "$MakeLogFile" 2>&1
     else
       HandleError 201
-    fi
+    fi;
   else
     HandleError 200
   fi;
@@ -53,10 +53,10 @@ LogCommandMake() {
 
 LogMake() {
   MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
-  if [ -w $MakeLogFile ]
+  if [ -w $MakeLogFile ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]
+  if [ -z "$2" ]; then
     if [ "$2" = "a" ]; then
       echo "$1" >> "$MakeLogFile" 2>&1
     elif [ "$2" = "r" ]; then
@@ -71,10 +71,10 @@ LogMake() {
 
 LogCommandMain() {
   MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'.zip.log'
-  if [ -w $MainLogFile ]
+  if [ -w $MainLogFile ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]
+  if [ -z "$2" ]; then
     if [ "$2" = "a" ]; then
       "$1" >> "$MainLogFile" 2>&1
     elif [ "$2" = "r" ]; then
@@ -89,10 +89,10 @@ LogCommandMain() {
 
 LogMain() {
   MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'.zip.log'
-  if [ -w $MainLogFile ]
+  if [ -w $MainLogFile ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]
+  if [ -z "$2" ]; then
     if [ "$2" = "a" ]; then
       echo "$1" >> "$MainLogFile" 2>&1
     # If rewrite mode is enabled, overwite file
@@ -106,8 +106,12 @@ LogMain() {
   fi;
 }
 
-SupperLunch() {
+LogLunch() {
   LogCommandMake "lunch $RomVariant'_'$DeviceCodename'-'$RomBuildType";
+}
+
+LogBuild() {
+  LogCommandMake "mka otapackage"
 }
 
 BuildDate() {
@@ -116,7 +120,7 @@ BuildDate() {
     elif [ $BuildTomorrow = false]; then
       echo $(date +%Y%m%d);
     else
-      LogMain "$BuildTomorrow is not true/false, assuming building for today ($(date +%Y%m%d))"
+      LogMain "\$BuildTomorrow is not true/false, assuming building for today ($(date +%Y%m%d))"
       echo $(date +%Y%m%d);
   fi;
 }
