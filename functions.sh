@@ -94,7 +94,7 @@ LogCommandMainErrors() {
       "$1" 2>>  "$MainLogFile" 1>/dev/null
     fi
   else
-    "$1" >>  "$MainLogFile" 2>&1
+    $1 >>  "$MainLogFile" 2>&1
   fi;
 }
 
