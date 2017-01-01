@@ -84,12 +84,12 @@
 #       5b. Lunch
 #       This builds some makefiles and tells mka what device and variant we're building
         LogMain "Taking lunch for $Device"
-        LogCommandMake "SupperLunch $Device"
+        SupperLunch $Device
 
 #       5c. Make
 #       This kicks off ninja amongst other things that makes the final files for our device
         LogMain "Making for $Device. Get the kettle on!"
-        LogCommandMake "SupperMake"
+        SupperMake
         LogMain "Make finished"
         LogCommandMain "tail -n 2 $MakeLogFile | head -n 1"
 

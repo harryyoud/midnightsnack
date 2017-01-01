@@ -123,7 +123,7 @@ SupperLunch() {
 }
 
 SupperMake() {
-  if ! [[ $(LogCommandMake "mka otapackage") ]]; then
+  if [[ $(LogCommandMake "mka otapackage") ]]; then
     echo 0
   else
     HandleError 200
