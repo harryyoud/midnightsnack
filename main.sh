@@ -28,11 +28,11 @@
 #     This is important, as empty variables will wreak havoc
 #     We'll only check the "Needed settings"
 
-      if ! [[ $(CheckVariablesExist) ]]; then
-        break
-      else
-        HandleError 50
-      fi
+      #if ! [[ $(CheckVariablesExist) ]]; then
+      #  break
+      #else
+      #  HandleError 50
+      #fi
 
 
 # 3.  LogHeaders
