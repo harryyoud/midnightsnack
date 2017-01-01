@@ -1,7 +1,7 @@
 HandleError() {
   if [ -z "$1" ]; then
     if [ $1 = 210 ]; then
-      # Log file not readable
+      # Log file not writable
       exit 210
     else
       ErrorNum=$1
@@ -34,75 +34,66 @@ HandleWarn() {
 }
 
 LogCommandMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
-  if [ -w $MakeLogFile ]; then
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'-mka.zip.log'
+  if ! [ -w $LogFileLoc ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]; then
-    if [ "$2" = "a" ]; then
-      "$1" >> "$MakeLogFile" 2>&1
-    elif [ "$2" = "r" ]; then
+  if ! [ -z "$2" ]; then
+    if [ "$2" = "r" ]; then
       "$1" >  "$MakeLogFile" 2>&1
     else
-      HandleError 201
-    fi;
+      "$1" >>  "$MakeLogFile" 2>&1
+    fi
   else
-    HandleError 200
+    "$1" >>  "$MakeLogFile" 2>&1
   fi;
 }
 
 LogMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
-  if [ -w $MakeLogFile ]; then
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'-mka.zip.log'
+  if ! [ -w $LogFileLoc ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]; then
-    if [ "$2" = "a" ]; then
-      echo "$1" >> "$MakeLogFile" 2>&1
-    elif [ "$2" = "r" ]; then
+  if ! [ -z "$2" ]; then
+    if [ "$2" = "r" ]; then
       echo "$1" >  "$MakeLogFile" 2>&1
     else
-      HandleError 202
+      echo "$1" >>  "$MakeLogFile" 2>&1
     fi
   else
-    HandleError 203
+    echo "$1" >>  "$MakeLogFile" 2>&1
   fi;
 }
 
 LogCommandMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
-  if [ -w $MainLogFile ]; then
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.zip.log'
+  if ! [ -w $LogFileLoc ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]; then
-    if [ "$2" = "a" ]; then
-      "$1" >> "$MainLogFile" 2>&1
-    elif [ "$2" = "r" ]; then
+  if ! [ -z "$2" ]; then
+    if [ "$2" = "r" ]; then
       "$1" >  "$MainLogFile" 2>&1
     else
-      HandleError 204
+      "$1" >>  "$MainLogFile" 2>&1
     fi
   else
-    HandleError 205
+    "$1" >>  "$MainLogFile" 2>&1
   fi;
 }
 
 LogMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
-  if [ -w $MainLogFile ]; then
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.zip.log'
+  if ! [ -w $LogFileLoc ]; then
     HandleError 210
   fi
-  if [ -z "$2" ]; then
-    if [ "$2" = "a" ]; then
-      echo "$1" >> "$MainLogFile" 2>&1
-    # If rewrite mode is enabled, overwite file
-    elif [ "$2" = "r" ]; then
-      echo "$1" >  "$MainLogFile" 2>&1
+  if ! [ -z "$2" ]; then
+    if [ "$2" = "r" ]; then
+      echo "$1" > "$MainLogFile" 2>&1
     else
-      HandleError 206
+      echo "$1" >> "$MainLogFile" 2>&1
     fi
   else
-    HandleError 207
+    echo "$1" >> "$MainLogFile" 2>&1
   fi;
 }
 
@@ -117,10 +108,7 @@ LogBuild() {
 GetBuildDate() {
   if [ $BuildTomorrow = true ]; then
       echo $(date --date="+1 day" +%Y%m%d);
-    elif [ $BuildTomorrow = false]; then
-      echo $(date +%Y%m%d);
-    else
-      LogMain "\$BuildTomorrow is not true/false, assuming building for today ($(date +%Y%m%d))"
-      echo $(date +%Y%m%d);
-  fi;
+  else
+    echo $(date +%Y%m%d);
+  fi
 }
