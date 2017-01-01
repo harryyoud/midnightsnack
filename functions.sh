@@ -67,7 +67,7 @@ LogMake() {
 }
 
 LogCommandMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
@@ -99,7 +99,7 @@ LogCommandMainErrors() {
 }
 
 LogMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$GetBuildDate'-'$Officiality'.zip.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
