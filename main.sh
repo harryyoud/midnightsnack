@@ -21,7 +21,8 @@
       source functions.sh
       source settings.sh
       source errors.sh
-      $USER=$(whoami)
+      export USER=$(whoami)
+      export USE_CCACHE=1
 
 # 2.  CheckVariablesExist
 #     This is important, as empty variables will wreak havoc
@@ -125,6 +126,8 @@ done
 
 
 # 6.  TarGZ Logs
+      LogMain "Archiving Logs"
+      LogMain "So we're done!"
       pushd $LogFileLoc
         LogCommandMainErrors "tar --remove-files -czvf $RomVariant-$RomVersion-$BuildDate-$Officiality.tar.gz $RomVariant-$RomVersion-$BuildDate-*"
       popd
