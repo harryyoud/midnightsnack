@@ -34,7 +34,7 @@ HandleWarn() {
 }
 
 LogCommandMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
   if [ -w $MakeLogFile ]; then
     HandleError 210
   fi
@@ -52,7 +52,7 @@ LogCommandMake() {
 }
 
 LogMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'-'$Device'-mka.zip.log'
   if [ -w $MakeLogFile ]; then
     HandleError 210
   fi
@@ -70,7 +70,7 @@ LogMake() {
 }
 
 LogCommandMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
   if [ -w $MainLogFile ]; then
     HandleError 210
   fi
@@ -88,7 +88,7 @@ LogCommandMain() {
 }
 
 LogMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(BuildDate)'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
   if [ -w $MainLogFile ]; then
     HandleError 210
   fi
@@ -114,7 +114,7 @@ LogBuild() {
   LogCommandMake "mka otapackage"
 }
 
-BuildDate() {
+GetBuildDate() {
   if [ $BuildTomorrow = true ]; then
       echo $(date --date="+1 day" +%Y%m%d);
     elif [ $BuildTomorrow = false]; then
