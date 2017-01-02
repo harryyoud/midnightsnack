@@ -116,6 +116,8 @@ LogMain() {
 
 SupperLunch() {
   if ! [[ -z $1 ]]; then
+    cd $SourceTreeLoc
+    source build/envsetup.sh
     LogCommandMake "lunch $RomVariant'_'$1'-'$RomBuildType";
   else
     HandleError 214
