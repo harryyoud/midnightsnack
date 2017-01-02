@@ -35,7 +35,7 @@ HandleWarn() {
 }
 
 LogCommandMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'-mka.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'.zip.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
@@ -51,7 +51,7 @@ LogCommandMake() {
 }
 
 LogMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'-mka.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'-'$Device'.zip.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
@@ -67,7 +67,7 @@ LogMake() {
 }
 
 LogCommandMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$(GetBuildDate)'-'$Officiality'.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
@@ -83,7 +83,7 @@ LogCommandMain() {
 }
 
 LogCommandMainErrors() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$Officiality'.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
@@ -99,7 +99,7 @@ LogCommandMainErrors() {
 }
 
 LogMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$GetBuildDate'-'$Officiality'.zip.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$GetBuildDate'-'$Officiality'.log'
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
   fi
