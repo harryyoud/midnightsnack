@@ -193,9 +193,9 @@ SupperLunch() {
 
 SupperMake() {
   LogCommandMake "mka otapackage"
-  # mka outputs "*** make completed successfully (HH:MM) ***" if successful
+  # mka outputs "*** make completed successfully (MM:SS) ***" if successful
   # Check the log for this to make sure we're good to continue
-  if [[ $(grep -q "make completed successfully" $MakeLogFile) ]]; then
+  if grep -q "make completed successfully" $MakeLogFile; then
     return 0
   else
     # Make failed
