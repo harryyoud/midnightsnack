@@ -1,5 +1,5 @@
 GetErrorDesc() {
-  $ErrorNum=$1
+  ErrorNum=$1
   case $ErrorNum in
     214)
       ErrorDesc="SupperLunch() needs 1 argument (the device codename)"
@@ -29,17 +29,46 @@ GetErrorDesc() {
       ErrorDesc="UploadZipAndRename() needs 2 arguments (fullzippath, zipname). You provided only 1"
       ;;
     217)
-    ErrorDesc="UploadZipAndRename() needs 2 arguments (fullzippath, zipname). You provided none"
+      ErrorDesc="UploadZipAndRename() needs 2 arguments (fullzippath, zipname). You provided none"
       ;;
     218)
-    ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided only 1"
+      ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided only 1"
       ;;
-    2179)
-    ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided none"
+    219)
+      ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided none"
+      ;;
+    230)
+      ErrorDesc="\$SourceTreeLoc not set in settings.sh. This is a required variable"
+      ;;
+    231)
+      ErrorDesc="\$DeviceList is not set in settings.sh. This is a required variable"
+      ;;
+    232)
+      ErrorDesc="\$DeviceList is not an array. This is needs to be an array, regardless of if you have one device to build for"
+      ;;
+    234)
+      ErrorDesc="\$RomVariant is not set in settings.sh. This is a required variable"
+      ;;
+    235)
+      ErrorDesc="\$RomBuildType is not set in settings.sh. This is a required variable"
+      ;;
+    236)
+      ErrorDesc="\$RomVersion is not set in settings.sh. This is a required variable"
+      ;;
+    238)
+      ErrorDesc="\$SSHHost is not set in settings.sh. This is a required variable as \$SSHUpload = true"
+      ;;
+    239)
+      ErrorDesc="\$SSHUser is not set in settings.sh. This is a required variable as \$SSHUpload = true"
+      ;;
+    240)
+      ErrorDesc="\$SSHPort is not set in settings.sh. This is a required variable as \$SSHUpload = true"
+      ;;
+    241)
+      ErrorDesc="\$SSHDirectory is not set in settings.sh. This is a required variable as \$SSHUpload = true"
       ;;
     *)
       ErrorDesc="This is embarassing. I have no explanation"
       ;;
   esac;
-  echo "$ErrorDesc"
 }
