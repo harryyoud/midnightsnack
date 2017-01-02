@@ -3,7 +3,7 @@ CheckVariablesExist() {
     HandleError 230; fi
   if [[ -z $DeviceList ]]; then
     HandleError 231; fi
-  if ! [[ "$(declare -p $DeviceList)" =~ "declare -a" ]]; then
+  if ! [[ "$(declare -p DeviceList)" =~ "declare -a" ]]; then
     HandleError 232; fi
   if [[ -z $LogFileLoc ]]; then
     HandleError 233; fi
