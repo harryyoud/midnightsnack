@@ -184,23 +184,15 @@ SupperLunch() {
     # ... for envsetup.sh to work
     LogCommandMainErrors "source build/envsetup.sh"
     LunchCommand=$RomVariant'_'$1'-'$RomBuildType
-    LogCommandMake "lunch $LunchCommand";
+    LogCommandMake "lunch $LunchCommand"; || HandleError 202
   else
     # Gimme more arguments
-    HandleError 214
+    HandleError 201
   fi
 }
 
 SupperMake() {
-  LogCommandMake "mka otapackage"
-  # mka outputs "*** make completed successfully (MM:SS) ***" if successful
-  # Check the log for this to make sure we're good to continue
-  if grep -q "make completed successfully" $MakeLogFile; then
-    return 0
-  else
-    # Make failed
-    HandleError 200
-  fi
+  LogCommandMake "mka otapackage" || HandleError 200
 }
 
 GetBuildDate() {
@@ -238,15 +230,15 @@ GetOutputZip() {
                 #                                            ^^^^^^^^^^^ Only files in the root of the directory
       # If find found a zip, output it
       if [[ -z $OutputZip ]]; then
-        HandleError 213
+        HandleError 212
       fi
     else
       # The device output folder doesn't exist
-      HandleError 212
+      HandleError 213
     fi
   else
     # Not given device argument
-    HandleError 213
+    HandleError 214
   fi
 }
 
@@ -258,11 +250,11 @@ GetLocalMD5SUM() {
       MD5SUM=$(md5sum $1)
     else
       # Output file doesn't exist
-      HandleError 214
+      HandleError 215
     fi
   else
     # First argument not given
-    HandleError 215
+    HandleError 216
   fi
 }
 
@@ -279,11 +271,11 @@ UploadZipAndRename() {
       ssh $SSHUser@$SSHHost -P $SSHPort mv $SSHDirectory/$LocalZipName.part $SSHDirectory/$LocalZipName
     else
       # Second argument not given
-      HandleError 216
+      HandleError 217
     fi
   else
     # First argument not given
-    HandleError 217
+    HandleError 218
 fi
 }
 
@@ -297,10 +289,10 @@ UploadMD5() {
       scp -P $SSHPort $LocalZipPath.md5sum $SSHUser@$SSHHost:"$SSHDirectory/$LocalZipName.md5sum"
     else
       # Second argument not given
-      HandleError 218
+      HandleError 219
     fi
   else
     # First argument given
-    HandleError 219
+    HandleError 220
 fi
 }

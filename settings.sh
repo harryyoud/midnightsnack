@@ -1,4 +1,8 @@
 # Needed Settings
+
+    # Log file location - needs to be defined first
+    LogFileLoc="/home/harry/android/system/logs"
+
     SourceTreeLoc="/home/harry/android/system"
     DeviceList=(  "angler"
                   "deb"
@@ -9,9 +13,6 @@
                   "huashan"
                   "klte"
                   "serranoltexx"  )
-
-    # Log file location
-    LogFileLoc="/home/harry/android/system/logs"
 
     # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
     #   RomVersion is '14.1'
@@ -28,7 +29,7 @@
 
 # Optionals
     # Set Zip file name to tomorrow's date (date at start of script + 24 hours)
-    BuildTomorrow=true
+    BuildTomorrow=false
     # Stop script on non-breaking changes
     StopOnWarn=false
     # Sync repo before building

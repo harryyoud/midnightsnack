@@ -91,7 +91,7 @@
         LogMain "\tMake finished"
         # Take next to last line of makelog, removes ### from start and end and removes colour control characters
         LastLineMakeLogFile=$(tail -n 2 $MakeLogFile | head -n 1 | tr -d \# | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | cut -b 2-)
-        LogCommandMain "\t$LastLineMakeLogFile"
+        LogMain "\t$LastLineMakeLogFile"
 
 #       5d. Find and rename zip
 #       This finds the most recently modified zip file in the device out directory, and renames it to something sensible
@@ -100,6 +100,7 @@
         GetNewName $Device
         LogMain "\tRenaming it to $NewName"
         NewOutputZip=$SourceTreeLoc/out/target/product/$Device/$NewName
+        mv
 
 #       5e. MD5SUM
 #       Output md5sum of zip to log and file

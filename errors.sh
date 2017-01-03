@@ -1,40 +1,43 @@
 GetErrorDesc() {
   ErrorNum=$1
   case $ErrorNum in
-    214)
+    200)
+      ErrorDesc="Make failed. Check $MakeLogFile"
+      ;;
+    201)
       ErrorDesc="SupperLunch() needs 1 argument (the device codename)"
+      ;;
+    202)
+      ErrorDesc="Lunch failed. Is $LunchCommand on the menu?"
       ;;
     211)
       ErrorDesc="GetNewName() needs 1 argument (the device codename)"
       ;;
-    213)
+    212)
       ErrorDesc="Output ZIP was not found (maybe make failed silently?)"
       ;;
-    200)
-      ErrorDesc="Make failed. Check $MakeLogFile"
-      ;;
-    212)
+    213)
       ErrorDesc="Out folder for $Device doesn't exist. Something weird has happened"
       ;;
-    213)
+    214)
       ErrorDesc="GetOutputZip() needs 1 argument (the device codename)"
       ;;
-    214)
+    215)
       ErrorDesc="Output ZIP provided to GetLocalMD5SUM doesn't exist"
       ;;
-    215)
+    216)
       ErrorDesc="GetLocalMD5SUM() needs 1 argument (the output zip)"
       ;;
-    216)
+    217)
       ErrorDesc="UploadZipAndRename() needs 2 arguments (fullzippath, zipname). You provided only 1"
       ;;
-    217)
+    218)
       ErrorDesc="UploadZipAndRename() needs 2 arguments (fullzippath, zipname). You provided none"
       ;;
-    218)
+    219)
       ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided only 1"
       ;;
-    219)
+    220)
       ErrorDesc="UploadMD5() needs 2 arguments (fullzippath, zipname). You provided none"
       ;;
     230)
