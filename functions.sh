@@ -105,14 +105,14 @@ LogMake() {
   if ! [[ -z "$2" ]]; then
     # If Log is called in rewrite mode (Log "Blah blah" "r"), overwrite log file
     if [[ "$2" = "r" ]]; then
-      echo $1 >  "$MakeLogFile" 2>&1
+      printf "%b\r\n"  "$1" >  "$MakeLogFile" 2>&1
                      #          ^^^^ redirect errors too
     # Otherwise, append
     else
-      echo $1 >>  "$MakeLogFile" 2>&1
+      printf "%b\r\n"  "$1" >>  "$MakeLogFile" 2>&1
     fi
   else
-    echo $1 >>  "$MakeLogFile" 2>&1
+    printf "%b\r\n"  "$1" >>  "$MakeLogFile" 2>&1
   fi;
 }
 
@@ -166,13 +166,13 @@ LogMain() {
   if ! [[ -z "$2" ]]; then
   # If log file folder isn't writable, error code 210 passed
     if [[ "$2" = "r" ]]; then
-      echo $1 > "$MainLogFile" 2>&1
+      printf "%b\r\n" "$1" > "$MainLogFile" 2>&1
     # Otherwise, append
     else
-      echo $1 >> "$MainLogFile" 2>&1
+      printf "%b\r\n" "$1" >> "$MainLogFile" 2>&1
     fi
   else
-    echo $1 >> "$MainLogFile" 2>&1
+    printf "%b\r\n" "$1" >> "$MainLogFile" 2>&1
   fi;
 }
 
@@ -206,10 +206,10 @@ SupperMake() {
 GetBuildDate() {
   if [[ $BuildTomorrow = true ]]; then
       # Get YYYYMMDD for tomorrow
-      echo $(date --date="+1 day" +%Y%m%d);
+      BuildDate=$(date --date="+1 day" +%Y%m%d);
   else
     # Get YYYYMMDD for today
-    echo $(date +%Y%m%d);
+    BuildDate=$(date +%Y%m%d);
   fi
 }
 
@@ -237,10 +237,7 @@ GetOutputZip() {
                 #                                                        ^^^^^^^^^^^^^ All zip files
                 #                                            ^^^^^^^^^^^ Only files in the root of the directory
       # If find found a zip, output it
-      if ! [[ -z $OutputZip ]]; then
-        echo $OutputZip
-      else
-        # Find didn't find a zip ($OutputZip was zero length)
+      if [[ -z $OutputZip ]]; then
         HandleError 213
       fi
     else
@@ -259,7 +256,6 @@ GetLocalMD5SUM() {
     # Check output zip exists
     if [[ -e $1 ]]; then
       MD5SUM=$(md5sum $1)
-      echo $MD5SUM
     else
       # Output file doesn't exist
       HandleError 214

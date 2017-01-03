@@ -9,8 +9,10 @@
                   "huashan"
                   "klte"
                   "serranoltexx"  )
+
     # Log file location
     LogFileLoc="/home/harry/android/system/logs"
+
     # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
     #   RomVersion is '14.1'
     #   Device is 'angler'
@@ -22,12 +24,20 @@
     RomBuildType="userdebug"
     RomVersion="14.1"
 
+
+
 # Optionals
+    # Set Zip file name to tomorrow's date (date at start of script + 24 hours)
     BuildTomorrow=true
+    # Stop script on non-breaking changes
     StopOnWarn=false
+    # Sync repo before building
     SyncOnStart=true
+    # Use ccache: the superfast cache of previously built files
     UseCcache=true
     DeleteBuildAfterUpload=true
+
+
 
 # SSH Upload
     SSHUpload=true

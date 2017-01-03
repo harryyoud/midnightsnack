@@ -21,7 +21,7 @@
       source functions.sh
       source settings.sh
       source errors.sh
-      BuildDate=$(GetBuildDate)
+      GetBuildDate
 
 
 # 2.  CheckVariablesExist
@@ -77,50 +77,51 @@
 
 #       5a. LogHeaders
 #       So we'll talk crap to the main log for a minute
-        LogMain "  Beginning loop as $Device:"
+        LogMain "Beginning loop as $Device:"
 
 #       5b. Lunch
 #       This builds some makefiles and tells mka what device and variant we're building
-        LogMain "   Taking lunch for $Device"
+        LogMain "\tTaking lunch for $Device"
         SupperLunch $Device
 
 #       5c. Make
 #       This kicks off ninja amongst other things that makes the final files for our device
-        LogMain "   Making for $Device. Get the kettle on!"
+        LogMain "\tMaking for $Device. Get the kettle on!"
         SupperMake
-        LogMain "   Make finished"
-        LastLineMakeLogFile=$(tail -n 2 $MakeLogFile | head -n 1)
-        LogCommandMain "    $LastLineMakeLogFile"
+        LogMain "\tMake finished"
+        # Take next to last line of makelog, removes ### from start and end and removes colour control characters
+        LastLineMakeLogFile=$(tail -n 2 $MakeLogFile | head -n 1 | tr -d \# | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | cut -b 2-)
+        LogCommandMain "\t$LastLineMakeLogFile"
 
 #       5d. Find and rename zip
 #       This finds the most recently modified zip file in the device out directory, and renames it to something sensible
         GetOutputZip $Device
-        LogMain "   Found zip at $OutputZip"
+        LogMain "\tFound zip at $OutputZip"
         GetNewName $Device
-        LogMain "   Renaming it to $NewName"
-        $NewOutputZip=$SourceTreeLoc/out/target/product/$Device/$NewName
+        LogMain "\tRenaming it to $NewName"
+        NewOutputZip=$SourceTreeLoc/out/target/product/$Device/$NewName
 
 #       5e. MD5SUM
 #       Output md5sum of zip to log and file
         GetLocalMD5SUM $NewOutputZip
-        LogMain "   Creating $NewOutputZip.md5sum"
+        LogMain "\tCreating $NewOutputZip.md5sum"
         echo $MD5SUM > $NewOutputZip.md5sum
-        LogMain "   MD5sum of zip: $MD5SUM"
+        LogMain "\tMD5sum of zip: $MD5SUM"
 
 #       5f. Upload zip, then rename
 #       We first upload the zip. The zip is named weird, as we don't want people downloading it while it's uploading
 #       After both have been uploaded, we can rename the zip
         if [[ SSHUpload = true ]]; then
-          LogMain "   Uploading zip to $SSHHost"
+          LogMain "\tUploading zip to $SSHHost"
           LogCommandMainErrors "UploadZipAndRename $NewOutputZip $NewName"
-          LogMain "   Uploading MD5"
+          LogMain "\tUploading MD5"
           LogCommandMainErrors "UploadMD5 $NewOutputZip $NewName"
         else
           "   Skipping SSH Upload as \$SSHUpload not set"
         fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
-      LogMain "   Finished main device loop for $Device"
+      LogMain "Finished main device loop for $Device"
       done
       LogMain "Completed the loop of death. Continuing..."
 
