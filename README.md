@@ -24,8 +24,12 @@ Because:
   - You're too lazy to set up Jenkins
 
 ##      How do I use it?
-Clone the repo:
-  git clone git@github.com:harryyoud/midnightsnack
+
+1.  git clone git@github.com:harryyoud/midnightsnack
+2.  configure settings in `settings.sh`
+3.  ./main.sh
+4.  Wait....
+5.  Profit (or it failed - check the logs)
 
 ##      Configuration
 All configuration happens in the settings.sh file. They variables in there are either self-explanatory or have a comment attached
