@@ -53,8 +53,8 @@
 
       LogMain "Moving into $SourceTreeLoc"
       cd $SourceTreeLoc
-      #LogMain "Sourcing envsetup.sh"
-      #LogCommandMainErrors source build/envsetup.sh
+      LogMain "Sourcing envsetup.sh"
+      LogCommandMainErrors "source build/envsetup.sh"
 
 # 4.  Repo Sync
 #     If $SyncOnStart is set, sync repositories
@@ -65,6 +65,16 @@
         LogCommandMainErrors "/home/$USER/bin/repo sync"
       else
         LogMain "\$SyncOnStart not set; skipping repo sync"
+      fi
+      #LogCommandMain "repopick 154620"
+      if ! [[ -z $RepoPicks ]]; then
+        LogMain "Applying repopicks from Gerrit:"
+          for RepoChangeID in "${RepoPicks[@]}"; do
+            LogCommandMainErrors "repopick $RepoChangeID"
+          done
+        LogMain "Repopicks complete"
+      else
+        LogMain "No repopick changeIDs defined; skipping"
       fi
 
 
@@ -100,7 +110,7 @@
         GetNewName $Device
         LogMain "\tRenaming it to $NewName"
         NewOutputZip=$SourceTreeLoc/out/target/product/$Device/$NewName
-        mv
+        LogCommandMainErrors "mv $OutputZip $NewOutputZip"
 
 #       5e. MD5SUM
 #       Output md5sum of zip to log and file
@@ -112,13 +122,13 @@
 #       5f. Upload zip, then rename
 #       We first upload the zip. The zip is named weird, as we don't want people downloading it while it's uploading
 #       After both have been uploaded, we can rename the zip
-        if [[ SSHUpload = true ]]; then
+        if [[ $SSHUpload = true ]]; then
           LogMain "\tUploading zip to $SSHHost"
           LogCommandMainErrors "UploadZipAndRename $NewOutputZip $NewName"
           LogMain "\tUploading MD5"
           LogCommandMainErrors "UploadMD5 $NewOutputZip $NewName"
         else
-          "   Skipping SSH Upload as \$SSHUpload not set"
+          LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
 #     End it all; I want to die
 #     Go back to 5a. and start again

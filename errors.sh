@@ -70,6 +70,9 @@ GetErrorDesc() {
     241)
       ErrorDesc="\$SSHDirectory is not set in settings.sh. This is a required variable as \$SSHUpload = true"
       ;;
+    242)
+      ErrorDesc="\$RepoPicks needs to be an array in settings.sh if it is declared"
+      ;;
     *)
       ErrorDesc="This is embarassing. I have no explanation"
       ;;

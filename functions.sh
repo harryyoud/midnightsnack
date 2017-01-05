@@ -13,8 +13,10 @@ CheckVariablesExist() {
     HandleError 235; fi
   if [[ -z $RomVersion ]]; then
     HandleError 236; fi
-  if [[ -z UNOFFICIAL ]]; then
-    HandleError 237; fi
+  if ! [[ -z $RepoPicks ]]; then
+    if ! [[ "$(declare -p RepoPicks)" =~ "declare -a" ]]; then
+      HandleError 221; fi
+  fi
   if [[ $SSHUpload = true ]]; then
     if [[ -z $SSHHost ]]; then
       HandleError 234; fi
@@ -184,7 +186,7 @@ SupperLunch() {
     # ... for envsetup.sh to work
     LogCommandMainErrors "source build/envsetup.sh"
     LunchCommand=$RomVariant'_'$1'-'$RomBuildType
-    LogCommandMake "lunch $LunchCommand"; || HandleError 202
+    LogCommandMake "lunch $LunchCommand" || HandleError 202
   else
     # Gimme more arguments
     HandleError 201
@@ -266,9 +268,9 @@ UploadZipAndRename() {
       LocalZipPath=$1
       LocalZipName=$2
       # Upload Zip file to nameofzipfile.zip.part
-      scp $SSHUser@$SSHHost -P $SSHPort $LocalZipPath $SSHUser@$SSHHost:"$SSHDirectory/$LocalZipName.part"
+      scp -P $SSHPort $LocalZipPath $SSHUser@$SSHHost:"$SSHDirectory/$Device/$LocalZipName.part"
       # Move nameofzipfile.zip.part to nameofzipfile
-      ssh $SSHUser@$SSHHost -P $SSHPort mv $SSHDirectory/$LocalZipName.part $SSHDirectory/$LocalZipName
+      ssh $SSHUser@$SSHHost -p $SSHPort mv $SSHDirectory/$Device/$LocalZipName.part $SSHDirectory/$Device/$LocalZipName
     else
       # Second argument not given
       HandleError 217
@@ -286,7 +288,7 @@ UploadMD5() {
     if ! [[ -z $2 ]]; then
       LocalZipPath=$1
       LocalZipName=$2
-      scp -P $SSHPort $LocalZipPath.md5sum $SSHUser@$SSHHost:"$SSHDirectory/$LocalZipName.md5sum"
+      scp -P $SSHPort $LocalZipPath.md5sum $SSHUser@$SSHHost:"$SSHDirectory/$Device/$LocalZipName.md5sum"
     else
       # Second argument not given
       HandleError 219

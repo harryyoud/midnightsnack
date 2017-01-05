@@ -21,7 +21,7 @@
     #   RomVariant is 'cm'
     #   RomBuildType is 'userdebug'
     #   Device is 'angler'
-    RomVariant="cm"
+    RomVariant="lineage"
     RomBuildType="userdebug"
     RomVersion="14.1"
 
@@ -37,6 +37,9 @@
     # Use ccache: the superfast cache of previously built files
     UseCcache=true
     DeleteBuildAfterUpload=true
+    # If you'd like to pick some specific unmerged changes from Gerrit after a repo sync, here's your chance:
+    # RepoPicks is an array so use it in the form below: (Like DeviceList)
+    #RepoPicks=("")
 
 
 
