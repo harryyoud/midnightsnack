@@ -100,7 +100,7 @@
         LogCommandMainErrors "KillJack"
         LogMain "Bringing him back to life with more resources"
         LogCommandMainErrors "ResuscitateJack"
-        
+
         LogMain "\tMaking for $Device. Get the kettle on!"
         SupperMake
         LogMain "\tMake finished"
@@ -147,6 +147,10 @@
       LogMain "And we're done!"
       pushd $LogFileLoc
         LogCommandMainErrors "tar --remove-files -czvf $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz $RomVariant-$RomVersion-$BuildDate-*"
+        if ! [[ -e archives ]]; then
+          LogCommandMainErrors "mkdir archives"
+        fi
+        LogCommandMainErrors "mv $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz archives/"
       popd
 
 
