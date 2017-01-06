@@ -5,6 +5,7 @@
 
     SourceTreeLoc="/home/harry/android/system"
     DeviceList=(  "angler"
+                  "d2vzw"
                   "deb"
                   "falcon"
                   "flo"
