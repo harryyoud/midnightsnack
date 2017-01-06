@@ -13,19 +13,21 @@ CheckVariablesExist() {
     HandleError 235; fi
   if [[ -z $RomVersion ]]; then
     HandleError 236; fi
+  if [[ -z $JackRAM ]]; then
+    HandleError 243; fi
   if ! [[ -z $RepoPicks ]]; then
     if ! [[ "$(declare -p RepoPicks)" =~ "declare -a" ]]; then
-      HandleError 221; fi
+      HandleError 242; fi
   fi
   if [[ $SSHUpload = true ]]; then
     if [[ -z $SSHHost ]]; then
-      HandleError 234; fi
+      HandleError 238; fi
     if [[ -z $SSHUser ]]; then
-      HandleError 235; fi
+      HandleError 239; fi
     if [[ -z $SSHPort ]]; then
-      HandleError 236; fi
+      HandleError 240; fi
     if [[ -z $SSHDirectory ]]; then
-      HandleError 237; fi
+      HandleError 241; fi
   fi
 }
 
@@ -297,4 +299,17 @@ UploadMD5() {
     # First argument given
     HandleError 220
 fi
+}
+
+KillJack() {
+  # Kill the jack-server so we can restart with more RAM
+  cd $SourceTreeLoc
+  ./prebuilts/sdk/tools/jack-admin kill-server
+}
+
+ResuscitateJack() {
+  # Bring Jack back with more RAM
+  cd $SourceTreeLoc
+  export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx$JackRAM"
+  ./prebuilts/sdk/tools/jack-admin start-server
 }

@@ -96,6 +96,11 @@
 
 #       5c. Make
 #       This kicks off ninja amongst other things that makes the final files for our device
+        LogMain "Killing Jack"
+        LogCommandMainErrors "KillJack"
+        LogMain "Bringing him back to life with more resources"
+        LogCommandMainErrors "ResuscitateJack"
+        
         LogMain "\tMaking for $Device. Get the kettle on!"
         SupperMake
         LogMain "\tMake finished"

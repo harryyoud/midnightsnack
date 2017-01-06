@@ -26,6 +26,8 @@
     RomBuildType="userdebug"
     RomVersion="14.1"
 
+    # Jack eats RAM
+    JackRAM="6g"
 
 
 # Optionals
