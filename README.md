@@ -8,13 +8,13 @@ This basically automates the process of building Android and its derivatives, as
 3.  LogHeaders
 4.  Repo Sync
 5.  DeviceLoop
-     a. LogHeaders
-     b. Lunch
-     c. Make
-     d. Find and rename zip
-     e. MD5sum
-     f. Upload zip, then rename
-     g. Delete Build zip
+     1. LogHeaders
+     2. Lunch
+     3. Make
+     4. Find and rename zip
+     5. MD5sum
+     6. Upload zip, then rename
+     7. Delete Build zip
 6.  TarGZ logs and move to LogFileLoc/archives
 7.  Drop email with successes and fails with attached logs (coming in Version 2)
 
