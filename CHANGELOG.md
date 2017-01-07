@@ -1,3 +1,6 @@
+v1.0.1:
+  - Fixed bad sourcing when main.sh is called from a different directory
+
 v1.0.0:
   - Initial Release
   - All features are ready apart

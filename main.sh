@@ -18,11 +18,12 @@
 
 
 # 1. Import includes (functions, settings, error descs) and set vars
-      source functions.sh
-      source settings.sh
-      source errors.sh
+      whereami=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+      source $whereami/functions.sh
+      source $whereami/settings.sh
+      source $whereami/errors.sh
       GetBuildDate
-      Version='1.0.0'
+      Version='1.0.1'
 
 
 # 2.  CheckVariablesExist
