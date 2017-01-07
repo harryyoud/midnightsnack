@@ -49,8 +49,13 @@ HandleError() {
       # Get error description (listed in ./errors.sh)
       GetErrorDesc $ErrorNum
       LogMain "Error $ErrorNum: $ErrorDesc"
-      LogMain 'Stopping due to error'
-      exit $ErrorNum
+      if [[ $ErrorNum == 200 && $ErrorNum == 202 && $ErrorNum == 212 ]] ; then
+        LogMain "Skipping $Device due to errors, continuing to next device"
+        continue
+      else
+        LogMain 'Stopping due to error'
+        exit $ErrorNum
+      fi
     fi
   else
     # We weren't passed an error code, so exit
@@ -180,7 +185,7 @@ LogMain() {
   fi;
 }
 
-SupperLunch() {
+MidnightSnackLunch() {
   # Check we've been given argument 1 (device)
   if ! [[ -z $1 ]]; then
     # Run this from source directory...
@@ -195,7 +200,7 @@ SupperLunch() {
   fi
 }
 
-SupperMake() {
+MidnightSnackMake() {
   LogCommandMake "mka otapackage" || HandleError 200
 }
 

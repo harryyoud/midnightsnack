@@ -5,7 +5,7 @@ GetErrorDesc() {
       ErrorDesc="Make failed. Check $MakeLogFile"
       ;;
     201)
-      ErrorDesc="SupperLunch() needs 1 argument (the device codename)"
+      ErrorDesc="MidnightSnackLunch() needs 1 argument (the device codename)"
       ;;
     202)
       ErrorDesc="Lunch failed. Is $LunchCommand on the menu?"

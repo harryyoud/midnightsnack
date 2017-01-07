@@ -15,8 +15,8 @@ This basically automates the process of building Android and its derivatives, as
      e. MD5sum
      f. Upload zip, then rename
      g. Delete Build zip
-6.  TarGZ logs
-7.  Drop email with successes and fails with attached logs
+6.  TarGZ logs and move to LogFileLoc/archives
+7.  Drop email with successes and fails with attached logs (coming in Version 2)
 
 ##      Why do I want this?
 Because:

@@ -13,7 +13,7 @@
 #       5f. Upload zip, then rename
 #       5g. Delete Build zip
 # 6.  TarGZ logs
-# 7.  Drop email with successes and fails with attached logs
+# 7.  Drop email with successes and fails with attached logs (coming in Version 2)
 
 
 
@@ -40,7 +40,7 @@
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
 
-      LogMain "Beginning supper on $(hostname) for $USER"
+      LogMain "Beginning midnightsnack on $(hostname) for $USER"
       LogMain "The time is $(date +'%T') on $(date +%Y/%m/%d)"
       LogMain "Devices to build for: ${DeviceList[*]}"
       LogMain "Build date is going to be set to $BuildDate"
@@ -92,7 +92,7 @@
 #       5b. Lunch
 #       This builds some makefiles and tells mka what device and variant we're building
         LogMain "\tTaking lunch for $Device"
-        SupperLunch $Device
+        MidnightSnackLunch $Device
 
 #       5c. Make
 #       This kicks off ninja amongst other things that makes the final files for our device
@@ -102,7 +102,7 @@
         LogCommandMainErrors "ResuscitateJack"
 
         LogMain "\tMaking for $Device. Get the kettle on!"
-        SupperMake
+        MidnightSnackMake
         LogMain "\tMake finished"
         # Take next to last line of makelog, removes ### from start and end and removes colour control characters
         LastLineMakeLogFile=$(tail -n 2 $MakeLogFile | head -n 1 | tr -d \# | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | cut -b 2-)
@@ -140,6 +140,8 @@
       LogMain "Finished main device loop for $Device"
       done
       LogMain "Completed the loop of death. Continuing..."
+      LogMain "Killing Jack once and for all"
+      LogCommandMainErrors "KillJack"
 
 
 # 6.  TarGZ Logs
