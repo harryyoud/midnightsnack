@@ -22,6 +22,7 @@
       source settings.sh
       source errors.sh
       GetBuildDate
+      Version='0.0.9 alpha'
 
 
 # 2.  CheckVariablesExist
@@ -40,7 +41,7 @@
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
 
-      LogMain "Beginning midnightsnack on $(hostname) for $USER"
+      LogMain "Beginning midnightsnack v$Version on $(hostname) for $USER"
       LogMain "The time is $(date +'%T') on $(date +%Y/%m/%d)"
       LogMain "Devices to build for: ${DeviceList[*]}"
       LogMain "Build date is going to be set to $BuildDate"
@@ -137,7 +138,7 @@
         fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
-      LogMain "Finished main device loop for $Device"
+      LogMain "\tFinished main device loop for $Device"
       done
       LogMain "Completed the loop of death. Continuing..."
       LogMain "Killing Jack once and for all"

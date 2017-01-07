@@ -49,13 +49,8 @@ HandleError() {
       # Get error description (listed in ./errors.sh)
       GetErrorDesc $ErrorNum
       LogMain "Error $ErrorNum: $ErrorDesc"
-      if [[ $ErrorNum == 200 && $ErrorNum == 202 && $ErrorNum == 212 ]] ; then
-        LogMain "Skipping $Device due to errors, continuing to next device"
-        continue
-      else
-        LogMain 'Stopping due to error'
-        exit $ErrorNum
-      fi
+      LogMain 'Stopping due to error'
+      exit $ErrorNum
     fi
   else
     # We weren't passed an error code, so exit
