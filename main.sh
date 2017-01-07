@@ -22,7 +22,7 @@
       source settings.sh
       source errors.sh
       GetBuildDate
-      Version='0.0.9 alpha'
+      Version='1.0.0'
 
 
 # 2.  CheckVariablesExist
