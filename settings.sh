@@ -44,6 +44,8 @@
     # If you'd like to pick some specific unmerged changes from Gerrit after a repo sync, here's your chance:
     # RepoPicks is an array so use it in the form below: (Like DeviceList)
     #RepoPicks=( "" )
+    # If you'd like to pick an entire topic to pull from Gerrit after a repo sync: (same format as RepoPicks and DeviceList)
+    RepoTopics=( "rebrand" )
 
 
 

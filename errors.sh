@@ -76,6 +76,9 @@ GetErrorDesc() {
     243)
       ErrorDesc="\$JackRAM is not set in settings.sh. This is a required variable"
       ;;
+    244)
+      ErrorDesc="\$RepoPicks needs to be an array in settings.sh if it is declared"
+      ;;    
     *)
       ErrorDesc="This is embarassing. I have no explanation"
       ;;

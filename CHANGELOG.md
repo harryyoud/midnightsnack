@@ -1,5 +1,8 @@
+v1.1.0:
+  - Add option to repopick by topic
+
 v1.0.1:
-  - Fixed bad sourcing when main.sh is called from a different directory
+  - Fixed bad sourcingwhen main.sh is called from a different directory
 
 v1.0.0:
   - Initial Release

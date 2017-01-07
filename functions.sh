@@ -19,6 +19,10 @@ CheckVariablesExist() {
     if ! [[ "$(declare -p RepoPicks)" =~ "declare -a" ]]; then
       HandleError 242; fi
   fi
+  if ! [[ -z $RepoTopics ]]; then
+    if ! [[ "$(declare -p RepoTopics)" =~ "declare -a" ]]; then
+      HandleError 244; fi
+  fi
   if [[ $SSHUpload = true ]]; then
     if [[ -z $SSHHost ]]; then
       HandleError 238; fi

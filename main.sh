@@ -23,7 +23,7 @@
       source $whereami/settings.sh
       source $whereami/errors.sh
       GetBuildDate
-      Version='1.0.1'
+      Version='1.1.0'
 
 
 # 2.  CheckVariablesExist
@@ -68,15 +68,23 @@
       else
         LogMain "\$SyncOnStart not set; skipping repo sync"
       fi
-      #LogCommandMain "repopick 154620"
       if ! [[ -z $RepoPicks ]]; then
-        LogMain "Applying repopicks from Gerrit:"
+        LogMain "Applying repopicks from Gerrit (by changeID):"
           for RepoChangeID in "${RepoPicks[@]}"; do
             LogCommandMainErrors "repopick $RepoChangeID"
           done
-        LogMain "Repopicks complete"
+        LogMain "Repopicks (by changeID) complete"
       else
         LogMain "No repopick changeIDs defined; skipping"
+      fi
+      if ! [[ -z $RepoTopics ]]; then
+        LogMain "Applying repopicks from Gerrit (by topic):"
+          for RepoTopic in "${RepoTopics[@]}"; do
+            LogCommandMainErrors "repopick $RepoTopics"
+          done
+        LogMain "Repopicks (by topic) complete"
+      else
+        LogMain "No repopick topics defined; skipping"
       fi
 
 
