@@ -11,10 +11,12 @@
                   "flo"
                   "flounder"
                   "flounder_lte"
+                # "grouper"
                   "huashan"
-                  "jalebi"
                   "klte"
-                  "serranoltexx"  )
+                  "serranoltexx"
+                # "tilapia"
+                                    )
 
     # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
     #   RomVersion is '14.1'
