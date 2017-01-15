@@ -53,13 +53,15 @@ HandleError() {
       # Get error description (listed in ./errors.sh)
       GetErrorDesc $ErrorNum
       LogMain "Error $ErrorNum: $ErrorDesc"
-      LogMain 'Stopping due to error'
+      LogMain 'Killing jack-server and stopping due to error'
+      LogCommandMainErrors "KillJack"
       exit $ErrorNum
     fi
   else
     # We weren't passed an error code, so exit
     LogMain "Unspecified Error" "a"
-    LogMain 'Stopping due to error' "a"
+    LogMain 'Killing jack-server and stopping due to error' "a"
+    LogCommandMainErrors "KillJack"
     exit 255
   fi
 }
