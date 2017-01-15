@@ -275,10 +275,11 @@ UploadZipAndRename() {
     if ! [[ -z $2 ]]; then
       LocalZipPath=$1
       LocalZipName=$2
+      ssh $SSHUser@$SSHHost -p $SSHPort "mkdir -p $SSHDirectory/$Device"
       # Upload Zip file to nameofzipfile.zip.part
       scp -P $SSHPort $LocalZipPath $SSHUser@$SSHHost:"$SSHDirectory/$Device/$LocalZipName.part"
       # Move nameofzipfile.zip.part to nameofzipfile
-      ssh $SSHUser@$SSHHost -p $SSHPort mv $SSHDirectory/$Device/$LocalZipName.part $SSHDirectory/$Device/$LocalZipName
+      ssh $SSHUser@$SSHHost -p $SSHPort "mv $SSHDirectory/$Device/$LocalZipName.part $SSHDirectory/$Device/$LocalZipName"
     else
       # Second argument not given
       HandleError 217
@@ -296,6 +297,7 @@ UploadMD5() {
     if ! [[ -z $2 ]]; then
       LocalZipPath=$1
       LocalZipName=$2
+      ssh $SSHUser@$SSHHost -p $SSHPort "mkdir -p $SSHDirectory/$Device" 
       scp -P $SSHPort $LocalZipPath.md5sum $SSHUser@$SSHHost:"$SSHDirectory/$Device/$LocalZipName.md5sum"
     else
       # Second argument not given

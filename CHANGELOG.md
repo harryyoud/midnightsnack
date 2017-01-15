@@ -1,3 +1,6 @@
+v1.2.0:
+  - Create remote SSH directory if it doesn't exist when uploading
+
 v1.1.1:
   - Kill jack-server when exiting for errors, otherwise it is left running
 
