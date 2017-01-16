@@ -80,7 +80,7 @@
       if ! [[ -z $RepoTopics ]]; then
         LogMain "Applying repopicks from Gerrit (by topic):"
           for RepoTopic in "${RepoTopics[@]}"; do
-            LogCommandMainErrors "repopick $RepoTopics"
+            LogCommandMainErrors "repopick -t $RepoTopic"
           done
         LogMain "Repopicks (by topic) complete"
       else
