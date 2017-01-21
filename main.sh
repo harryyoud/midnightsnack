@@ -23,6 +23,7 @@
       source $whereami/settings.sh
       source $whereami/errors.sh
       GetBuildDate
+      StartTimestamp=$(date +%s)
       Version='1.1.0'
 
 
@@ -155,7 +156,10 @@
 
 
 # 6.  TarGZ Logs
-      LogMain "Archiving Logs"
+      LogMain "Archiving logs after last message of this script"
+      LogMain "Finished script at $(date +'%T') on $(date +%Y/%m/%d)"
+      SecondsForScript=$(expr $(date +%s) - $StartTimestamp)
+      LogMain "That means it took $(printf '%dh:%dm:%ds\n' $(($SecondsForScript/3600)) $(($SecondsForScript%3600/60)) $(($SecondsForScript%60)))"
       LogMain "And we're done!"
       pushd $LogFileLoc
         LogCommandMainErrors "tar --remove-files -czvf $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz $RomVariant-$RomVersion-$BuildDate-*"
