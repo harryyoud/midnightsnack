@@ -132,7 +132,7 @@
         GetLocalMD5SUM $NewOutputZip
         LogMain "\tCreating $NewOutputZip.md5sum"
         echo $MD5SUM > $NewOutputZip.md5sum
-        LogMain "\tMD5sum of zip: $MD5SUM"
+        LogMain "\tMD5sum of zip: ${MD5SUM:0:32}"
 
 #       5f. Upload zip, then rename
 #       We first upload the zip. The zip is named weird, as we don't want people downloading it while it's uploading
