@@ -162,7 +162,7 @@
         if ! [[ -e archives ]]; then
           LogCommandMainErrors "mkdir archives"
         fi
-        LogCommandMainErrors "mv $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz archives/"
+        mv $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz archives/
       popd
 
 
