@@ -4,18 +4,11 @@
     LogFileLoc="/home/harry/android/system/logs"
 
     SourceTreeLoc="/home/harry/android/system"
-    DeviceList=(  "angler"
-                  "d2vzw"
-                  "deb"
-                  "falcon"
-                  "flo"
+    DeviceList=(
                   "flounder"
                   "flounder_lte"
-                # "grouper"
-                  "huashan"
-                  "klte"
-                  "serranoltexx"
-                # "tilapia"
+                  "grouper"
+                 #"tilapia"
                                     )
 
     # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
