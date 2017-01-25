@@ -58,6 +58,9 @@ GetErrorDesc() {
     236)
       ErrorDesc="\$RomVersion is not set in settings.sh. This is a required variable"
       ;;
+    237)
+      ErrorDesc="\$MakeClean is not set in settings.sh. This is a required variable"
+      ;;
     238)
       ErrorDesc="\$SSHHost is not set in settings.sh. This is a required variable as \$SSHUpload = true"
       ;;
