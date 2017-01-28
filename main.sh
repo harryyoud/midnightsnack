@@ -123,7 +123,11 @@
           LogCommandMainErrors "make clean"
         fi
 
-        LogMain "\tMaking for $Device. Get the kettle on!"
+        if [[ -z $MakeThreadCount ]]; then
+          LogMain "\tMaking for $Device. Get the kettle on!"
+        else
+          LogMain "\tMaking for $Device with $MakeThreadCount threads. Get the kettle on!"
+        fi
         MidnightSnackMake
         LogMain "\tMake finished"
         # Take next to last line of makelog, removes ### from start and end and removes colour control characters

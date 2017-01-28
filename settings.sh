@@ -25,7 +25,7 @@
 
     # Jack eats RAM
     JackRAM="6g"
-    
+
     # Can run make clean before building OR before building + between each device build
     # Can be "Disabled", "BetweenBuilds" or "AtStart"
     MakeClean="BetweenBuilds"
@@ -46,6 +46,10 @@
     #RepoPicks=( "" )
     # If you'd like to pick an entire topic to pull from Gerrit after a repo sync: (same format as RepoPicks and DeviceList)
     #RepoTopics=( "rebrand" )
+
+    # Override threads for building. This is set to CPU core count by default
+    # If this is too low (<2), you may run into weird problems
+    #MakeThreadCount=2
 
 
 
