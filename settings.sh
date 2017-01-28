@@ -5,10 +5,11 @@
 
     SourceTreeLoc="/home/harry/android/system"
     DeviceList=(
+                  "angler"
                   "flounder"
                   "flounder_lte"
                   "grouper"
-                 #"tilapia"
+                  "tilapia"
                                     )
 
     # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
