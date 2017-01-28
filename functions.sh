@@ -15,6 +15,8 @@ CheckVariablesExist() {
     HandleError 236; fi
   if [[ -z $JackRAM ]]; then
     HandleError 243; fi
+  if [[ -z $MakeClean ]]; then
+    HandleError 237; fi
   if ! [[ -z $RepoPicks ]]; then
     if ! [[ "$(declare -p RepoPicks)" =~ "declare -a" ]]; then
       HandleError 242; fi

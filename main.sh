@@ -87,6 +87,12 @@
       else
         LogMain "No repopick topics defined; skipping"
       fi
+      if [[ $MakeClean = "AtStart" ]] || [[ $MakeClean = "BetweenDevices" ]]; then
+        LogMain "Removing build directory, as \$MakeClean set to $MakeClean"
+        LogCommandMainErrors "make clean"
+      else
+        LogMain "Skipping make clean as MakeClean set to No"
+      fi
 
 
 # 5.  DeviceLoop
@@ -111,6 +117,11 @@
         LogCommandMainErrors "KillJack"
         LogMain "\tBringing him back to life with more resources"
         LogCommandMainErrors "ResuscitateJack"
+
+        if [[ $MakeClean = "BetweenDevices" ]]; then
+          LogMain "Cleaning build directory, as \$MakeClean set to $MakeClean"
+          LogCommandMainErrors "make clean"
+        fi
 
         LogMain "\tMaking for $Device. Get the kettle on!"
         MidnightSnackMake

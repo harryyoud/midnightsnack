@@ -25,6 +25,10 @@
 
     # Jack eats RAM
     JackRAM="6g"
+    
+    # Can run make clean before building OR before building + between each device build
+    # Can be "Disabled", "BetweenBuilds" or "AtStart"
+    MakeClean="BetweenBuilds"
 
 
 # Optionals
