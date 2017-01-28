@@ -48,7 +48,8 @@
     #RepoTopics=( "rebrand" )
 
     # Override threads for building. This is set to CPU core count by default
-    # If this is too low (<2), you may run into weird problems
+    # If this is too low (<2), you may run into weird problems like:
+    # javac: file not found: out/target/common/obj/APPS/org.cyanogenmod.platform-res_intermediates/src/cyanogenmod/platform/Manifest.java
     #MakeThreadCount=2
 
 
