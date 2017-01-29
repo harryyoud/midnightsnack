@@ -12,7 +12,7 @@
                   "tilapia"
                                     )
 
-    # In Settings, Version: 14.1-20161325-UNOFFICIAL-angler
+    # In Settings, Version: 14.1-20161225-UNOFFICIAL-angler
     #   RomVersion is '14.1'
     #   Device is 'angler'
     # In Settings, Build Number: cm_angler-userdebug
