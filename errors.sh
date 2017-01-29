@@ -81,7 +81,9 @@ GetErrorDesc() {
       ;;
     244)
       ErrorDesc="\$RepoPicks needs to be an array in settings.sh if it is declared"
-      ;;    
+      ;;
+    245)
+      ErrorDesc="Ctrl-C caught, aborting"
     *)
       ErrorDesc="This is embarassing. I have no explanation"
       ;;

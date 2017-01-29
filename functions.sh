@@ -327,3 +327,14 @@ ResuscitateJack() {
   export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx$JackRAM"
   ./prebuilts/sdk/tools/jack-admin start-server
 }
+
+TrapCtrlC() {
+  LogMain "Ctrl-C caught. Beginning clean up and ending..."
+  echo "We've got your message, give us a second to clean up and we'll hand back control"
+  LogMain "We leave no men or women behind. We're taking Jack and Jill with us"
+  # Oops, we killed him
+  LogCommandMainErrors "KillJack"
+  LogMain "Cleanup finished. Now we quit."
+  echo "All done. See you in the afterlife"
+  HandleError 245
+}

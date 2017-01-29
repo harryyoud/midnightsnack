@@ -22,6 +22,7 @@
       source $whereami/functions.sh
       source $whereami/settings.sh
       source $whereami/errors.sh
+      trap "TrapCtrlC" 2
       GetBuildDate
       StartTimestamp=$(date +%s)
       Version='1.1.0'
