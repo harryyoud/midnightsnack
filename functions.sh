@@ -299,7 +299,7 @@ UploadMD5() {
     if ! [[ -z $2 ]]; then
       LocalZipPath=$1
       LocalZipName=$2
-      ssh $SSHUser@$SSHHost -p $SSHPort "mkdir -p $SSHDirectory/$Device" 
+      ssh $SSHUser@$SSHHost -p $SSHPort "mkdir -p $SSHDirectory/$Device"
       scp -P $SSHPort $LocalZipPath.md5sum $SSHUser@$SSHHost:"$SSHDirectory/$Device/$LocalZipName.md5sum"
     else
       # Second argument not given
@@ -314,7 +314,7 @@ fi
 KillJack() {
   # Kill the jack-server so we can restart with more RAM
   cd $SourceTreeLoc
-  ./prebuilts/sdk/tools/jack-admin kill-server
+  ./prebuilts/sdk/tools/jack-admin list-server && ./prebuilts/sdk/tools/jack-admin kill-server
 }
 
 ResuscitateJack() {
