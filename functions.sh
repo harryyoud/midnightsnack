@@ -204,7 +204,11 @@ MidnightSnackLunch() {
 }
 
 MidnightSnackMake() {
-  LogCommandMake "mka otapackage" || HandleError 200
+  if [[ -z $MakeThreadCount ]]; then
+    LogCommandMake "mka otapackage" || HandleError 200
+  else
+    LogCommandMake "make -j$MakeThreadCount otapackage" || HandleError 200
+  fi
 }
 
 GetBuildDate() {
