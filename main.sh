@@ -91,7 +91,7 @@
         LogMain "Removing build directory, as \$MakeClean set to $MakeClean"
         LogCommandMainErrors "make clean"
       else
-        LogMain "Skipping make clean as MakeClean set to No"
+        LogMain "Skipping make clean as MakeClean set to no"
       fi
 
 
