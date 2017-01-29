@@ -72,7 +72,7 @@
       if ! [[ -z $RepoPicks ]]; then
         LogMain "Applying repopicks from Gerrit (by changeID):"
           for RepoChangeID in "${RepoPicks[@]}"; do
-            LogCommandMainErrors "repopick $RepoChangeID"
+            LogCommandMainErrors "repopick -q $RepoChangeID"
           done
         LogMain "Repopicks (by changeID) complete"
       else
@@ -81,7 +81,7 @@
       if ! [[ -z $RepoTopics ]]; then
         LogMain "Applying repopicks from Gerrit (by topic):"
           for RepoTopic in "${RepoTopics[@]}"; do
-            LogCommandMainErrors "repopick -t $RepoTopic"
+            LogCommandMainErrors "repopick -q -t $RepoTopic"
           done
         LogMain "Repopicks (by topic) complete"
       else
