@@ -65,7 +65,7 @@
 
       if [[ $SyncOnStart = true ]]; then
         LogMain "Syncing repositories"
-        LogCommandMainErrors "/home/$USER/bin/repo sync"
+        LogCommandMainErrors "/home/$USER/bin/repo sync -q"
       else
         LogMain "\$SyncOnStart not set; skipping repo sync"
       fi
