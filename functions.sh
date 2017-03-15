@@ -338,3 +338,8 @@ TrapCtrlC() {
   echo "All done. See you in the afterlife"
   HandleError 245
 }
+
+FlaskAddRomRemote() {
+  LogMain "Adding ROM into lineageos_updater app"
+  ssh $SSHUser@$SSHHost -p $SSHPort "export FLASK_APP=app.py; cd $LineageUpdaterAppDir; flask addrom -f $NewName -d $Device -v $RomVersion -t '$BuildDate 00:01:01' -r unofficial -m $MD5SUM -u $DownloadBaseURL/$Device/$NewName"
+}

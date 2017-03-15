@@ -60,3 +60,4 @@
       SSHUser=harryyoud
       SSHPort=22
       SSHDirectory=/home/harryyoud/public_html/lineageos/downloads
+    DownloadBaseURL="https://harryyoud.co.uk/lineageos/downloads"
