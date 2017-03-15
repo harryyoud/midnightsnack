@@ -20,6 +20,9 @@
     RomBuildType="userdebug"
     RomVersion="14.1"
 
+	#might be one of (RELEASE, NIGHTLY, SNAPSHOT, EXPERIMENTAL, UNOFFICIAL)
+	BuildType="UNOFFICIAL"
+
     # Jack eats RAM
     JackRAM="6g"
 
