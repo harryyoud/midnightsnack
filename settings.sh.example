@@ -1,15 +1,12 @@
 # Needed Settings
 
-    # Log file location - needs to be defined first
-    LogFileLoc="/home/harry/android/system/logs"
+    # Log file location - needs to be first thing defined
+    LogFileLoc="/home/thatusername/buildlogs"
 
-    SourceTreeLoc="/home/harry/android/system"
+    SourceTreeLoc="/home/thatusername/android/system"
     DeviceList=(
-                  "angler"
-                  "flounder"
-                  "flounder_lte"
-                  "grouper"
-                  "tilapia"
+                  "bacon"
+                  "oneplus3"
                                     )
 
     # In Settings, Version: 14.1-20161225-UNOFFICIAL-angler
@@ -34,18 +31,24 @@
 # Optionals
     # Set Zip file name to tomorrow's date (date at start of script + 24 hours)
     BuildTomorrow=false
+
     # Stop script on non-breaking changes
     StopOnWarn=false
+
     # Sync repo before building
     SyncOnStart=true
+
     # Use ccache: the superfast cache of previously built files
     UseCcache=true
+
+    # Currently not implemented
     DeleteBuildAfterUpload=true
+
     # If you'd like to pick some specific unmerged changes from Gerrit after a repo sync, here's your chance:
     # RepoPicks is an array so use it in the form below: (Like DeviceList)
     #RepoPicks=( "" )
     # If you'd like to pick an entire topic to pull from Gerrit after a repo sync: (same format as RepoPicks and DeviceList)
-    #RepoTopics=( "rebrand" )
+    #RepoTopics=( "" )
 
     # Override threads for building. This is set to CPU core count by default
     # If this is too low (<3), you may run into weird problems like:
@@ -56,8 +59,8 @@
 
 # SSH Upload
     SSHUpload=true #Therefore define the parameters
-      SSHHost=harryyoud.co.uk
-      SSHUser=harryyoud
+      SSHHost=mysshhost.org
+      SSHUser=thatusername
       SSHPort=22
-      SSHDirectory=/home/harryyoud/public_html/lineageos/downloads
-    DownloadBaseURL="https://harryyoud.co.uk/lineageos/downloads"
+      SSHDirectory=/home/mysshhost.org/public_html/lineageos/downloads
+    DownloadBaseURL="https://mysshhost.org/lineageos/downloads"
