@@ -84,6 +84,7 @@ GetErrorDesc() {
       ;;
     245)
       ErrorDesc="Ctrl-C caught, aborting"
+      ;;
     *)
       ErrorDesc="This is embarassing. I have no explanation"
       ;;
