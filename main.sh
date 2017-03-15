@@ -40,6 +40,12 @@
         export USE_CCACHE=0
       fi
 
+	  if [[ -z $BuildType ]]; then
+		BuildType="UNOFFICIAL"
+	  fi
+	  
+	  export CM_BUILDTYPE=$BuildType
+	  
 # 3.  LogHeaders
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
@@ -178,11 +184,11 @@
       LogMain "That means it took $(printf '%dh:%dm:%ds\n' $(($SecondsForScript/3600)) $(($SecondsForScript%3600/60)) $(($SecondsForScript%60)))"
       LogMain "And we're done!"
       pushd $LogFileLoc
-        LogCommandMainErrors "tar --remove-files -czvf $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz $RomVariant-$RomVersion-$BuildDate-*"
+        LogCommandMainErrors "tar --remove-files -czvf $RomVariant-$RomVersion-$BuildDate-$BuildType.tar.gz $RomVariant-$RomVersion-$BuildDate-*"
         if ! [[ -e archives ]]; then
           LogCommandMainErrors "mkdir archives"
         fi
-        mv $RomVariant-$RomVersion-$BuildDate-UNOFFICIAL.tar.gz archives/
+        mv $RomVariant-$RomVersion-$BuildDate-$BuildType.tar.gz archives/
       popd
 
 

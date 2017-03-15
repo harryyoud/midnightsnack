@@ -89,7 +89,7 @@ HandleWarn() {
 }
 
 LogCommandMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$Device'.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'-'$Device'.zip.log'
   # If log file folder isn't writable, error code 210 passed
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
@@ -109,7 +109,7 @@ LogCommandMake() {
 }
 
 LogMake() {
-  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$Device'.zip.log'
+  MakeLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'-'$Device'.zip.log'
   # If log file folder isn't writable, error code 210 passed
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
@@ -129,7 +129,7 @@ LogMake() {
 }
 
 LogCommandMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'.log'
   # If log file folder isn't writable, error code 210 passed
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
@@ -149,7 +149,7 @@ LogCommandMain() {
 }
 
 LogCommandMainErrors() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'.log'
   # If log file folder isn't writable, error code 210 passed
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
@@ -170,7 +170,7 @@ LogCommandMainErrors() {
 }
 
 LogMain() {
-  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'.log'
+  MainLogFile=$LogFileLoc'/'$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'.log'
   # If log file folder isn't writable, error code 210 passed
   if ! [[ -w $LogFileLoc ]]; then
     HandleError 210
@@ -224,7 +224,7 @@ GetBuildDate() {
 GetNewName() {
   # Check we've been given the first argument (device)
   if ! [[ -z $1 ]]; then
-    NewName=$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$1'.zip'
+    NewName=$RomVariant'-'$RomVersion'-'$BuildDate'-'$BuildType'-'$1'.zip'
   else
     # Can I haz moar argument?
     HandleError 211
