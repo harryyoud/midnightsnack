@@ -162,6 +162,13 @@
         else
           LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
+		
+		if [[ $LineageUpdater = true ]]; then
+		  LogMain "\tAdding ROM to LineageOS Updater"
+		  LogCommandMainErrors "FlaskAddRomRemote"
+		else
+		  #skip message?
+		fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
       LogMain "\tFinished main device loop for $Device"
