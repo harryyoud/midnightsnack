@@ -88,6 +88,15 @@
       else
         LogMain "No repopick topics defined; skipping"
       fi
+      if ! [[ -z $AdditionalScriptsAfterRepoSync ]]; then
+        LogMain "Running Additional Scripts:"
+          for AdditionalScript in "${AdditionalScriptsAfterRepoSync[@]}"; do
+            LogCommandMainErrors "$AdditionalScript"
+          done
+        LogMain "Done"
+      else
+        LogMain "No Additional Scripts defined; skipping"
+      fi
       if [[ $MakeClean = "AtStart" ]] || [[ $MakeClean = "BetweenDevices" ]]; then
         LogMain "Removing build directory, as \$MakeClean set to $MakeClean"
         LogCommandMainErrors "make clean"
