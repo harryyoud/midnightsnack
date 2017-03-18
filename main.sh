@@ -179,6 +179,14 @@
         if [[ $LineageUpdater = true ]]; then
           FlaskAddRomRemote
         fi
+        
+        if ! [[ -z $DeleteBuildAfterUpload ]]; then
+          if [[ $DeleteBuildAfterUpload = true ]]; then
+            LogMain "\tDelete $NewName"
+            LogCommandMainErrors "rm $NewOutputZip"
+            LogMain "\tDelete $NewName.md5sum"
+            LogCommandMainErrors "rm $NewOutputZip.md5sum"
+          fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
       LogMain "\tFinished main device loop for $Device"
