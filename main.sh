@@ -162,6 +162,15 @@
         else
           LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
+
+        if ! [[ -z $DeleteBuildAfterUpload ]]; then
+          if [[ $DeleteBuildAfterUpload = true ]]; then
+            LogMain "\tDelete $NewName"
+            LogCommandMainErrors "rm $NewOutputZip"
+            LogMain "\tDelete $NewName.md5sum"
+            LogCommandMainErrors "rm $NewOutputZip.md5sum"
+          fi
+        fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
       LogMain "\tFinished main device loop for $Device"
