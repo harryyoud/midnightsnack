@@ -340,6 +340,6 @@ TrapCtrlC() {
 }
 
 FlaskAddRomRemote() {
-  LogMain "Adding ROM into lineageos_updater app"
+  LogMain "\tAdding ROM into lineageos_updater app"
   curl -H "Apikey: $LineageUpdaterApikey" -H "Content-Type: application/json" -X POST -d '{ "device": "'"$Device"'", "filename": "'"$NewName"'", "md5sum": "'"${MD5SUM:0:32}"'", "romtype": "unofficial", "url": "'"$DownloadBaseURL/$Device/$NewName"'", "version": "'"$RomVersion"'" }' "$LineageUpdaterURL/api/v1/add_build"
 }
