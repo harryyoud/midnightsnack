@@ -341,5 +341,5 @@ TrapCtrlC() {
 
 FlaskAddRomRemote() {
   LogMain "Adding ROM into lineageos_updater app"
-  ssh $SSHUser@$SSHHost -p $SSHPort "export FLASK_APP=app.py; cd $LineageUpdaterAppDir; flask addrom -f $NewName -d $Device -v $RomVersion -t '$BuildDate 00:01:01' -r unofficial -m $MD5SUM -u $DownloadBaseURL/$Device/$NewName"
+  curl -H "Apikey: $LineageUpdaterApikey" -H "Content-Type: application/json" -X POST -d '{ "device": "'"$Device"'", "filename": "'"$NewName"'", "md5sum": "'"${MD5SUM:0:32}"'", "romtype": "unofficial", "url": "'"$DownloadBaseURL/$Device/$NewName"'", "version": "'"$RomVersion"'" }' "$LineageUpdaterURL/api/v1/add_build"
 }

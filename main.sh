@@ -39,7 +39,20 @@
       else
         export USE_CCACHE=0
       fi
-
+      if [[ -z $LineageUpdater ]]; then
+        LineageUpdater=false
+      else
+        if [[ $LineageUpdater = true ]]; then
+          if [[ -z $LineageUpdaterApikey ]]; then
+            LineageUpdater=false
+          elif [[ -z $LineageUpdaterURL ]]; then
+            LineageUpdater=false
+          elif [[ -z $DownloadBaseURL ]]; then
+            LineageUpdater=false
+          fi
+        fi
+      fi
+	  
 # 3.  LogHeaders
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
@@ -162,7 +175,11 @@
         else
           LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
-
+		
+        if [[ $LineageUpdater = true ]]; then
+          FlaskAddRomRemote
+        fi
+        
         if ! [[ -z $DeleteBuildAfterUpload ]]; then
           if [[ $DeleteBuildAfterUpload = true ]]; then
             LogMain "\tDelete $NewName"
@@ -170,7 +187,6 @@
             LogMain "\tDelete $NewName.md5sum"
             LogCommandMainErrors "rm $NewOutputZip.md5sum"
           fi
-        fi
 #     End it all; I want to die
 #     Go back to 5a. and start again
       LogMain "\tFinished main device loop for $Device"

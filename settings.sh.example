@@ -63,5 +63,7 @@
       SSHUser=thatusername
       SSHPort=22
       SSHDirectory=/home/mysshhost.org/public_html/lineageos/downloads
-    LineageUpdaterAppDir=/home/mysshhost.org/lineageos_updater
-    DownloadBaseURL="https://mysshhost.org/lineageos/downloads"
+    LineageUpdater=true
+      LineageUpdaterApikey="abcdefghijklmn"
+      LineageUpdaterURL="https://lineage.harryyoud.co.uk"
+      DownloadBaseURL="https://mysshhost.org/lineageos/downloads"
