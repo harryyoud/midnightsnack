@@ -195,6 +195,10 @@
             LogCommandMainErrors "rm $NewOutputZip"
             LogMain "\tDelete $NewName.md5sum"
             LogCommandMainErrors "rm $NewOutputZip.md5sum"
+            LogMain "\tCleanup apkcerts_intermediates"
+            LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates/*"
+            LogMain "\tCleanup target_files_intermediates"
+            LogCommandMainErrors "rm -r $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/*"
           fi
         fi
 
