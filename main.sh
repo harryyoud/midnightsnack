@@ -57,10 +57,14 @@
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
 
+      LogMain ""
+      LogMain "########################"
       LogMain "Beginning midnightsnack v$Version on $(hostname) for $USER"
       LogMain "The time is $(date +'%T') on $(date +%Y/%m/%d)"
       LogMain "Devices to build for: ${DeviceList[*]}"
       LogMain "Build date is going to be set to $BuildDate"
+      LogMain "Here we go..."
+      LogMain "########################"
 
       if [[ $StopOnWarn = true ]]; then
         LogMain "We'll bail out on warnings"
