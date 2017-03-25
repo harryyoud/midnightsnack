@@ -53,6 +53,32 @@
         fi
       fi
 
+      if [[ -z $SignBuilds ]]; then
+        SignBuilds=false
+      else
+        if [[ $SignBuilds = true ]]; then
+          if [[ -z $SigningKeysPath ]]; then
+            SignBuilds=false
+          else
+#           check if keys directory exists
+            if ! [[ -d $SigningKeysPath ]]; then
+              SignBuilds=false
+            else
+#             check if releasekey.pk8 exists in keys directory
+              if ! [[ -f $SigningKeysPath/releasekey.pk8 ]]; then
+                SignBuilds=false
+              fi
+            fi
+          fi
+#         check for key passwords file
+          if ! [[ -z $SigningKeyPasswordsFile ]]; then
+            if [[ -f $SigningKeyPasswordsFile ]]; then
+              export ANDROID_PW_FILE=$SigningKeyPasswordsFile
+            fi
+          fi
+        fi
+      fi
+
 # 3.  LogHeaders
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
@@ -161,6 +187,11 @@
         LastLineMakeLogFile=$(tail -n 2 $MakeLogFile | head -n 1 | tr -d \# | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | cut -b 2-)
         LogMain "\t$LastLineMakeLogFile"
 
+        if [[ $SignBuilds = true ]]; then
+          LogMain "\tSign Build"
+          SignBuild $Device
+        fi
+
 #       5d. Find and rename zip
 #       This finds the most recently modified zip file in the device out directory, and renames it to something sensible
         GetOutputZip $Device
@@ -203,6 +234,10 @@
             LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates/*"
             LogMain "\tCleanup target_files_intermediates"
             LogCommandMainErrors "rm -r $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/*"
+            if [[ $SignBuilds = true ]]; then
+              LogMain "\tDelete $SourceTreeLoc/out/target/product/$Device/signed-target_files.zip"
+              LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/signed-target_files.zip"
+            fi
           fi
         fi
 

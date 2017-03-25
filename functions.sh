@@ -205,9 +205,17 @@ MidnightSnackLunch() {
 
 MidnightSnackMake() {
   if [[ -z $MakeThreadCount ]]; then
-    LogCommandMake "mka otapackage" || HandleError 200
+    if [[ $SignBuilds = true ]]; then
+      LogCommandMake "mka target-files-package" || HandleError 200
+    else
+      LogCommandMake "mka otapackage" || HandleError 200
+    fi
   else
-    LogCommandMake "make -j$MakeThreadCount otapackage" || HandleError 200
+    if [[ $SignBuilds = true ]]; then
+      LogCommandMake "make -j$MakeThreadCount target-files-package" || HandleError 200
+    else
+      LogCommandMake "make -j$MakeThreadCount otapackage" || HandleError 200
+    fi
   fi
 }
 
@@ -224,7 +232,11 @@ GetBuildDate() {
 GetNewName() {
   # Check we've been given the first argument (device)
   if ! [[ -z $1 ]]; then
-    NewName=$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$1'.zip'
+    if [[ $SignBuilds = true ]]; then
+      NewName=$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$1'-signed.zip'
+    else
+      NewName=$RomVariant'-'$RomVersion'-'$BuildDate'-'UNOFFICIAL'-'$1'.zip'
+    fi
   else
     # Can I haz moar argument?
     HandleError 211
@@ -342,4 +354,15 @@ TrapCtrlC() {
 FlaskAddRomRemote() {
   LogMain "\tAdding ROM into lineageos_updater app"
   curl -H "Apikey: $LineageUpdaterApikey" -H "Content-Type: application/json" -X POST -d '{ "device": "'"$Device"'", "filename": "'"$NewName"'", "md5sum": "'"${MD5SUM:0:32}"'", "romtype": "unofficial", "url": "'"$DownloadBaseURL/$Device/$NewName"'", "version": "'"$RomVersion"'" }' "$LineageUpdaterURL/api/v1/add_build"
+}
+
+SignBuild() {
+  if ! [[ -z $1 ]]; then
+    OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -r 's/lineage_'"$1"'-target_files-(.*?).zip/\1/')
+    LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/signed-target_files.zip"
+    LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block --backup=true $SourceTreeLoc/out/target/product/$1/signed-target_files.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
+  else
+    # First argument given
+    HandleError 220
+  fi
 }
