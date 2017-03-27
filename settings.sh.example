@@ -57,7 +57,10 @@
     # you should store this file in an secure place
     SigningKeyPasswordsFile=~/.android-certs/passwords.txt
 
-    # Currently not implemented
+    # incremental OTA
+    IncrementalOTA=false
+
+    # Delete builds after upload
     DeleteBuildAfterUpload=true
 
     # build with su

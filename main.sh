@@ -51,6 +51,17 @@
         export WITH_SU=false
       fi
 
+      SkipOTA=false
+      if [[ -z $IncrementalOTA ]]; then
+        IncrementalOTA=false
+      else
+        if [[ $MakeClean = "AtStart" ]] || [[ $MakeClean = "BetweenDevices" ]]; then
+#         make clean will clean the out/target/product/... directory
+#         that means we cant build an incremental OTA update 
+          IncrementalOTA=false
+        fi
+      fi
+
       if [[ -z $LineageUpdater ]]; then
         LineageUpdater=false
       else
@@ -213,12 +224,54 @@
         NewOutputZip=$SourceTreeLoc/out/target/product/$Device/$NewName
         LogCommandMainErrors "mv $OutputZip $NewOutputZip"
 
+        if [[ $IncrementalOTA = true ]]; then
+          LogMain "\tBuilding Incremental OTA"
+          GetCurrentOTAHash
+          if [[ $OTAHash ]]; then
+            GetPreviousOTAHash
+            if [[ $PreviousOTAHash ]]; then
+              GetNewOTAName $Device
+              if [[ $SignBuilds = true ]]; then
+                OldOTAZip="$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/lineage_$Device-target_files-$PreviousOTAHash-signed.zip"
+                NewOTAZip="$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/lineage_$Device-target_files-$OTAHash-signed.zip"
+              else
+                OldOTAZip="$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/lineage_$Device-target_files-$PreviousOTAHash.zip"
+                NewOTAZip="$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/lineage_$Device-target_files-$OTAHash.zip"
+              fi
+
+              OTAOutputZip="$SourceTreeLoc/out/target/product/$Device/$NewOTAName"
+              if [[ $SignBuilds = true ]]; then
+                LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
+              else
+                LogCommandMake "build/tools/releasetools/ota_from_target_files --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
+              fi
+              if ! [[ -f $OTAOutputZip ]]; then
+                LogMain "\tError: Building Incremental OTA failed!"
+				SkipOTA=true
+              fi
+            else
+              LogMain "\tNo Previous OTA found, Skipping"
+			  SkipOTA=true
+            fi
+          else
+            LogMain "\tNo OTA found, Skipping"
+			SkipOTA=true
+          fi
+        fi
+
 #       5e. MD5SUM
 #       Output md5sum of zip to log and file
+        if [[ $IncrementalOTA = true ]] && [[ $SkipOTA = false ]]; then
+          GetLocalMD5SUM $OTAOutputZip
+          LogMain "\tCreating $NewOTAName.md5sum"
+          echo $MD5SUM > $OTAOutputZip.md5sum
+          LogMain "\tMD5sum of $NewOTAName: ${MD5SUM:0:32}"
+        fi
+
         GetLocalMD5SUM $NewOutputZip
-        LogMain "\tCreating $NewOutputZip.md5sum"
+        LogMain "\tCreating $NewName.md5sum"
         echo $MD5SUM > $NewOutputZip.md5sum
-        LogMain "\tMD5sum of zip: ${MD5SUM:0:32}"
+        LogMain "\tMD5sum of $NewName: ${MD5SUM:0:32}"
 
 #       5f. Upload zip, then rename
 #       We first upload the zip. The zip is named weird, as we don't want people downloading it while it's uploading
@@ -228,6 +281,16 @@
           LogCommandMainErrors "UploadZipAndRename $NewOutputZip $NewName"
           LogMain "\tUploading MD5"
           LogCommandMainErrors "UploadMD5 $NewOutputZip $NewName"
+
+          if [[ $IncrementalOTA = true ]] && [[ $SkipOTA = false ]]; then
+            if [[ -a $OTAOutputZip ]]; then
+              LogMain "\tUploading OTA zip to $SSHHost"
+              LogCommandMainErrors "UploadZipAndRename $OTAOutputZip $NewOTAName"
+              LogMain "\tUploading OTA MD5"
+              LogCommandMainErrors "UploadMD5 $OTAOutputZip $NewOTAName"
+            fi
+          fi
+
         else
           LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
@@ -238,18 +301,7 @@
 
         if ! [[ -z $DeleteBuildAfterUpload ]]; then
           if [[ $DeleteBuildAfterUpload = true ]]; then
-            LogMain "\tDelete $NewName"
-            LogCommandMainErrors "rm $NewOutputZip"
-            LogMain "\tDelete $NewName.md5sum"
-            LogCommandMainErrors "rm $NewOutputZip.md5sum"
-            LogMain "\tCleanup apkcerts_intermediates"
-            LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates/*"
-            LogMain "\tCleanup target_files_intermediates"
-            LogCommandMainErrors "rm -r $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/*"
-            if [[ $SignBuilds = true ]]; then
-              LogMain "\tDelete $SourceTreeLoc/out/target/product/$Device/signed-target_files.zip"
-              LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/signed-target_files.zip"
-            fi
+            CleanupAfterBuild
           fi
         fi
 
