@@ -41,6 +41,22 @@
     # Use ccache: the superfast cache of previously built files
     UseCcache=true
 
+    # Sign the Builds
+    SignBuilds=false
+
+    # path to the signing keys
+    # http://wiki.lineageos.org/signing_builds.html#generating-the-keys
+    SigningKeysPath=~/.android-certs
+
+    # file for signing key passwords
+    # only needed if you specified an password when creating the keys
+    # otherwise comment out the setting/variable
+    # file is in the format
+    # [[[  PASSWORD  ]]] PATH_TO_KEY
+    # for an example see examples/passwords.txt
+    # you should store this file in an secure place
+    SigningKeyPasswordsFile=~/.android-certs/passwords.txt
+
     # Currently not implemented
     DeleteBuildAfterUpload=true
 
