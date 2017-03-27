@@ -361,6 +361,8 @@ SignBuild() {
     OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -r 's/lineage_'"$1"'-target_files-(.*?).zip/\1/')
     LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/signed-target_files.zip"
     LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block --backup=true $SourceTreeLoc/out/target/product/$1/signed-target_files.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
+    LogCommandMake "build/tools/releasetools/sign_zip.py -k $SigningKeysPath/releasekey $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash-signed.zip"
+    LogCommandMake "rm $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
   else
     # First argument given
     HandleError 220
