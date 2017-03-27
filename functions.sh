@@ -243,6 +243,20 @@ GetNewName() {
   fi
 }
 
+GetNewOTAName() {
+  # Check we've been given the first argument (device)
+  if ! [[ -z $1 ]]; then
+    if [[ $SignBuilds = true ]]; then
+      NewOTAName=$RomVariant'-'$RomVersion'-'$PreviousOTAHash'-to-'$OTAHash'-'UNOFFICIAL'-'$1'-signed.zip'
+    else
+      NewOTAName=$RomVariant'-'$RomVersion'-'$PreviousOTAHash'-to-'$OTAHash'-'UNOFFICIAL'-'$1'.zip'
+    fi
+  else
+    # Can I haz moar argument?
+    HandleError 211
+  fi
+}
+
 GetOutputZip() {
   # Check we've been given first argument (device)
   if ! [[ -z $1 ]]; then
@@ -356,11 +370,67 @@ FlaskAddRomRemote() {
   curl -H "Apikey: $LineageUpdaterApikey" -H "Content-Type: application/json" -X POST -d '{ "device": "'"$Device"'", "filename": "'"$NewName"'", "md5sum": "'"${MD5SUM:0:32}"'", "romtype": "unofficial", "url": "'"$DownloadBaseURL/$Device/$NewName"'", "version": "'"$RomVersion"'" }' "$LineageUpdaterURL/api/v1/add_build"
 }
 
+GetCurrentOTAHash() {
+  if [[ $SignBuilds = true ]]; then
+    OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates | head -1 | sed -nr 's/lineage_'"$Device"'-target_files-([0-9a-f]{10})-signed.zip/\1/')
+  else
+    OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates | head -1 | sed -nr 's/lineage_'"$Device"'-target_files-([0-9a-f]{10}).zip/\1/')
+  fi
+}
+
+GetPreviousOTAHash() {
+  if [[ $SignBuilds = true ]]; then
+    PreviousOTAHash=$(ls -t $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates -I "*$OTAHash*" | head -1 | sed -nr 's/lineage_'"$Device"'-target_files-([0-9a-f]{10})-signed.zip/\1/')
+  else
+    PreviousOTAHash=$(ls -t $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates -I "*$OTAHash*" | head -1 | sed -nr 's/lineage_'"$Device"'-target_files-([0-9a-f]{10}).zip/\1/')
+  fi
+}
+
+CleanupAfterBuild() {
+  LogMain "\tDelete $NewName"
+  LogCommandMainErrors "rm $NewOutputZip"
+  LogMain "\tDelete $NewName.md5sum"
+  LogCommandMainErrors "rm $NewOutputZip.md5sum"
+
+  if [[ $IncrementalOTA = true ]]; then
+    GetCurrentOTAHash
+    if [[ $SkipOTA = false ]]; then
+      GetNewOTAName $Device
+      LogMain "\tDelete $NewOTAName"
+      LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/$NewOTAName"
+      LogMain "\tDelete $NewOTAName.md5sum"
+      LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/$NewOTAName.md5sum"
+    fi
+
+    if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING" ]]; then
+      if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates" ]]; then
+        LogMain "\tCleanup apkcerts_intermediates"
+        LogMain $(find $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates/* -maxdepth 0 -not -name "*$OTAHash*" -exec rm -r {} \;)
+      fi
+      if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates" ]]; then
+        LogMain "\tCleanup target_files_intermediates"
+        LogMain $(find $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/* -maxdepth 0 -not -name "*$OTAHash*" -exec rm -r {} \;)
+      fi
+    fi
+  else
+    if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING" ]]; then
+      if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates" ]]; then
+        LogMain "\tCleanup apkcerts_intermediates"
+        LogCommandMainErrors "rm $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/apkcerts_intermediates/*"
+      fi
+      if [[ -d "$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates" ]]; then
+        LogMain "\tCleanup target_files_intermediates"
+        LogCommandMainErrors "rm -r $SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/*"
+      fi
+    fi
+  fi
+}
+
 SignBuild() {
   if ! [[ -z $1 ]]; then
-    OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -r 's/lineage_'"$1"'-target_files-(.*?).zip/\1/')
-    LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/signed-target_files.zip"
-    LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block --backup=true $SourceTreeLoc/out/target/product/$1/signed-target_files.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
+    OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -nr 's/lineage_'"$1"'-target_files-([0-9a-f]{10}).zip/\1/')
+    LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash-signed.zip"
+    LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block --backup=true $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash-signed.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
     LogCommandMake "build/tools/releasetools/sign_zip.py -k $SigningKeysPath/releasekey $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash-signed.zip"
     LogCommandMake "rm $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
   else
