@@ -39,6 +39,18 @@
       else
         export USE_CCACHE=0
       fi
+
+      if [[ -z $WithSU ]]; then
+        WithSU=false
+      fi
+
+      if [[ $WithSU = true ]]; then
+        export WITH_SU=true
+      else
+#       override eventually existing environment variable
+        export WITH_SU=false
+      fi
+
       if [[ -z $LineageUpdater ]]; then
         LineageUpdater=false
       else
