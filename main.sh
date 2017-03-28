@@ -227,9 +227,9 @@
         if [[ $IncrementalOTA = true ]]; then
           LogMain "\tBuilding Incremental OTA"
           GetCurrentOTAHash
-          if [[ $OTAHash ]]; then
+          if ! [[ -z $OTAHash ]]; then
             GetPreviousOTAHash
-            if [[ $PreviousOTAHash ]]; then
+            if ! [[ -z $PreviousOTAHash ]]; then
               GetNewOTAName $Device
               if [[ $SignBuilds = true ]]; then
                 OldOTAZip="$SourceTreeLoc/out/target/product/$Device/obj/PACKAGING/target_files_intermediates/lineage_$Device-target_files-$PreviousOTAHash-signed.zip"
