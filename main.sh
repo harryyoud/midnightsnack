@@ -240,10 +240,11 @@
               fi
 
               OTAOutputZip="$SourceTreeLoc/out/target/product/$Device/$NewOTAName"
+              OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$Device/ota_script_path)
               if [[ $SignBuilds = true ]]; then
-                LogCommandMake "build/tools/releasetools/ota_from_target_files -k $SigningKeysPath/releasekey --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
+                LogCommandMake "$OtaScriptPath -k $SigningKeysPath/releasekey --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
               else
-                LogCommandMake "build/tools/releasetools/ota_from_target_files --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
+                LogCommandMake "$OtaScriptPath --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
               fi
               if ! [[ -f $OTAOutputZip ]]; then
                 LogMain "\tError: Building Incremental OTA failed!"
