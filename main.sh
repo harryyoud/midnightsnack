@@ -177,6 +177,8 @@
 
       LogMain "Beginning main device loop at $(date +'%T')"
       for Device in "${DeviceList[@]}"; do
+#       set $BuildDate to the actual date of starting the build
+        GetBuildDate
 
 #       5a. LogHeaders
 #       So we'll talk crap to the main log for a minute
