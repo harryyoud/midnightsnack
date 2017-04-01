@@ -241,6 +241,9 @@
 
               OTAOutputZip="$SourceTreeLoc/out/target/product/$Device/$NewOTAName"
               OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$Device/ota_script_path)
+              if [[ -z $OtaScriptPath ]]; then
+                  OtaScriptPath="build/tools/releasetools/ota_from_target_files"
+              fi
               if [[ $SignBuilds = true ]]; then
                 LogCommandMake "$OtaScriptPath -k $SigningKeysPath/releasekey --block -i $OldOTAZip $NewOTAZip $OTAOutputZip"
               else
