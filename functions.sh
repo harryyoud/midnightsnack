@@ -429,8 +429,9 @@ CleanupAfterBuild() {
 SignBuild() {
   if ! [[ -z $1 ]]; then
     OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -nr 's/lineage_'"$1"'-target_files-([0-9a-f]{10}).zip/\1/p')
-    OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$1/ota_script_path)
-    if [[ -z $OtaScriptPath ]]; then
+    if [[ -f $SourceTreeLoc/out/target/product/$1/ota_script_path ]]; then
+        OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$1/ota_script_path)
+    else
         OtaScriptPath="build/tools/releasetools/ota_from_target_files"
     fi
     LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash-signed.zip"
