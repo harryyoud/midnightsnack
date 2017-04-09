@@ -102,6 +102,16 @@
         fi
       fi
 
+      if [[ -z $GPGSign ]]; then
+        GPGSign=false
+      else
+        if [[ $GPGSign = true ]]; then
+          if [[ -z $GPGKey ]]; then
+            GPGSign=false
+          fi
+        fi
+      fi
+
 # 3.  LogHeaders
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
@@ -255,15 +265,15 @@
 
               if ! [[ -f $OTAOutputZip ]]; then
                 LogMain "\tError: Building Incremental OTA failed!"
-				SkipOTA=true
+                SkipOTA=true
               fi
             else
               LogMain "\tNo Previous OTA found, Skipping"
-			  SkipOTA=true
+              SkipOTA=true
             fi
           else
             LogMain "\tNo OTA found, Skipping"
-			SkipOTA=true
+            SkipOTA=true
           fi
         fi
 
@@ -281,6 +291,22 @@
         echo $MD5SUM > $NewOutputZip.md5sum
         LogMain "\tMD5sum of $NewName: ${MD5SUM:0:32}"
 
+        if [[ $GPGSign = true ]]; then
+          if ! [[ -z $GPGPassphrase ]]; then
+            gpg -u $GPGKey --passphrase $GPGPassphrase --armor --detach-sig --sign $NewOutputZip
+          else
+            gpg -u $GPGKey --armor --detach-sig --sign $NewOutputZip
+          fi
+        fi
+
+        if [[ $IncrementalOTA = true ]] && [[ $SkipOTA = false ]] && [[ $GPGSign = true ]]; then
+          if ! [[ -z $GPGPassphrase ]]; then
+            gpg -u $GPGKey --passphrase $GPGPassphrase --armor --detach-sig --sign $OTAOutputZip
+          else
+            gpg -u $GPGKey --armor --detach-sig --sign $OTAOutputZip
+          fi
+        fi
+
 #       5f. Upload zip, then rename
 #       We first upload the zip. The zip is named weird, as we don't want people downloading it while it's uploading
 #       After both have been uploaded, we can rename the zip
@@ -289,6 +315,9 @@
           LogCommandMainErrors "UploadZipAndRename $NewOutputZip $NewName"
           LogMain "\tUploading MD5"
           LogCommandMainErrors "UploadMD5 $NewOutputZip $NewName"
+          if [[ $GPGSign = true ]]; then
+            LogCommandMainErrors "UploadZipAndRename $NewOutputZip.asc $NewName.asc"
+          fi
 
           if [[ $IncrementalOTA = true ]] && [[ $SkipOTA = false ]]; then
             if [[ -a $OTAOutputZip ]]; then
@@ -296,6 +325,9 @@
               LogCommandMainErrors "UploadZipAndRename $OTAOutputZip $NewOTAName"
               LogMain "\tUploading OTA MD5"
               LogCommandMainErrors "UploadMD5 $OTAOutputZip $NewOTAName"
+              if [[ $GPGSign = true ]]; then
+                LogCommandMainErrors "UploadZipAndRename $OTAOutputZip.asc $NewOTAName.asc"
+              fi
             fi
           fi
 
