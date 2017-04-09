@@ -44,6 +44,15 @@
     # Sign the Builds
     SignBuilds=false
 
+    # GPG sign the build
+    GPGSign=false
+
+    # use this GPG key to sign
+    GPGKey="B32756E6"
+
+    # fill this if your GPG key needs an passphrase
+    GPGPassphrase=""
+
     # path to the signing keys
     # http://wiki.lineageos.org/signing_builds.html#generating-the-keys
     SigningKeysPath=~/.android-certs
@@ -75,7 +84,7 @@
     # run additional scripts after repo sync
     AdditionalScriptsAfterRepoSync=(
         "vendor/extra/patch.sh"
-	)
+    )
 
     # Override threads for building. This is set to CPU core count by default
     # If this is too low (<3), you may run into weird problems like:
