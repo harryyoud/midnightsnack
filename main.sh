@@ -112,6 +112,16 @@
         fi
       fi
 
+      if [[ -z $DeleteOldBuilds ]]; then
+        DeleteOldBuilds=false
+      else
+        if [[ $DeleteOldBuilds = true ]]; then
+          if [[ -z $DeleteOlderThan ]]; then
+            DeleteOldBuilds=false
+          fi
+        fi
+      fi
+
 # 3.  LogHeaders
 #     We'll output all the admin information at the top of the log file, so it can be seen
 #     We'll set the builddate here too, so it's early and can be outputted
@@ -330,13 +340,12 @@
               fi
             fi
           fi
-
         else
           LogMain "\tSkipping SSH Upload as \$SSHUpload not set"
         fi
 
         if [[ $LineageUpdater = true ]]; then
-          FlaskAddRomRemote
+          AddRomToUpdater
         fi
 
         if ! [[ -z $DeleteBuildAfterUpload ]]; then
@@ -345,9 +354,13 @@
           fi
         fi
 
-#     End it all; I want to die
-#     Go back to 5a. and start again
-      LogMain "\tFinished main device loop for $Device"
+        if [[ $DeleteOldBuilds = true ]]; then
+          RemoveBuilds
+        fi
+
+#       End it all; I want to die
+#       Go back to 5a. and start again
+        LogMain "\tFinished main device loop for $Device"
       done
 
       LogMain "Completed the loop of death. Continuing..."

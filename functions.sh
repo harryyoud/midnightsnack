@@ -365,7 +365,7 @@ TrapCtrlC() {
   HandleError 245
 }
 
-FlaskAddRomRemote() {
+AddRomToUpdater() {
   LogMain "\tAdding ROM into lineageos_updater app"
   curl -H "Apikey: $LineageUpdaterApikey" -H "Content-Type: application/json" -X POST -d '{ "device": "'"$Device"'", "filename": "'"$NewName"'", "md5sum": "'"${MD5SUM:0:32}"'", "romtype": "unofficial", "url": "'"$DownloadBaseURL/$Device/$NewName"'", "version": "'"$RomVersion"'" }' "$LineageUpdaterURL/api/v1/add_build"
 }
@@ -430,9 +430,9 @@ SignBuild() {
   if ! [[ -z $1 ]]; then
     OTAHash=$(ls -t $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates | head -1 | sed -nr 's/lineage_'"$1"'-target_files-([0-9a-f]{10}).zip/\1/p')
     if [[ -f $SourceTreeLoc/out/target/product/$1/ota_script_path ]]; then
-        OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$1/ota_script_path)
+      OtaScriptPath=$(cat $SourceTreeLoc/out/target/product/$1/ota_script_path)
     else
-        OtaScriptPath="build/tools/releasetools/ota_from_target_files"
+      OtaScriptPath="build/tools/releasetools/ota_from_target_files"
     fi
     LogCommandMake "build/tools/releasetools/sign_target_files_apks -o -d $SigningKeysPath $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash.zip $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash-signed.zip"
     LogCommandMake "$OtaScriptPath -k $SigningKeysPath/releasekey --block --backup=true $SourceTreeLoc/out/target/product/$1/obj/PACKAGING/target_files_intermediates/lineage_$1-target_files-$OTAHash-signed.zip $SourceTreeLoc/out/target/product/$1/lineage_$1-ota-$OTAHash.zip"
@@ -441,5 +441,21 @@ SignBuild() {
   else
     # First argument given
     HandleError 220
+  fi
+}
+
+RemoveBuilds() {
+  FileToDelete="$RomVariant-$RomVersion-$DeleteOlderThan-UNOFFICIAL-$Device.zip"
+  # delete old build from lineageos updater
+  if [[ $LineageUpdater = true ]]; then
+    # delete the build from the updater
+    curl -H "Apikey: $LineageUpdaterApikey" -X DELETE $LineageUpdaterURL/api/v1/$FileToDelete > /dev/null 2>&1
+    # purge cache to remove it from the listing
+    curl -H "Apikey: $LineageUpdaterApikey" -X POST $LineageUpdaterURL/api/v1/purgecache > /dev/null 2>&1
+  fi
+
+  # delete builds from remote server
+  if [[ $SSHUpload = true ]]; then
+    ssh $SSHUser@$SSHHost -p $SSHPort "rm $SSHDirectory/$1/$FileToDelete*" > /dev/null 2>&1
   fi
 }

@@ -44,15 +44,6 @@
     # Sign the Builds
     SignBuilds=false
 
-    # GPG sign the build
-    GPGSign=false
-
-    # use this GPG key to sign
-    GPGKey="B32756E6"
-
-    # fill this if your GPG key needs an passphrase
-    GPGPassphrase=""
-
     # path to the signing keys
     # http://wiki.lineageos.org/signing_builds.html#generating-the-keys
     SigningKeysPath=~/.android-certs
@@ -65,6 +56,15 @@
     # for an example see examples/passwords.txt
     # you should store this file in an secure place
     SigningKeyPasswordsFile=~/.android-certs/passwords.txt
+
+    # GPG sign the build
+    GPGSign=false
+
+    # use this GPG key to sign
+    GPGKey="B32756E6"
+
+    # fill this if your GPG key needs an passphrase
+    GPGPassphrase=""
 
     # incremental OTA
     IncrementalOTA=false
@@ -103,3 +103,5 @@
       LineageUpdaterApikey="abcdefghijklmn"
       LineageUpdaterURL="https://lineage.harryyoud.co.uk"
       DownloadBaseURL="https://mysshhost.org/lineageos/downloads"
+    DeleteOldBuilds=false # delete old builds from remote ssh server and lineageos updater
+      DeleteOlderThan=$(date +%Y%m%d --date="5 weeks ago") # if we build weekly and want keep only the latest 5 builds
