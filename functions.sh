@@ -458,4 +458,8 @@ RemoveBuilds() {
   if [[ $SSHUpload = true ]]; then
     ssh $SSHUser@$SSHHost -p $SSHPort "rm $SSHDirectory/$1/$FileToDelete*" > /dev/null 2>&1
   fi
+
+  if [[ -f $LogFileLoc/archives/$RomVariant-$RomVersion-$DeleteOlderThan-UNOFFICIAL.tar.gz ]]; then
+    rm $LogFileLoc/archives/$RomVariant-$RomVersion-$DeleteOlderThan-UNOFFICIAL.tar.gz
+  fi
 }
