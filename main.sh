@@ -198,6 +198,11 @@
       LogMain "Beginning main device loop at $(date +'%T')"
       for Device in "${DeviceList[@]}"; do
 
+#       set device build otions
+        if [[ -f $whereami/options/$Device.sh ]]; then
+          source $whereami/options/$Device.sh set
+        fi
+
 #       5a. LogHeaders
 #       So we'll talk crap to the main log for a minute
         LogMain "Beginning loop as $Device:"
@@ -361,6 +366,11 @@
 #       End it all; I want to die
 #       Go back to 5a. and start again
         LogMain "\tFinished main device loop for $Device"
+
+#       unset device build otions
+        if [[ -f $whereami/options/$Device.sh ]]; then
+          source $whereami/options/$Device.sh unset
+        fi
       done
 
       LogMain "Completed the loop of death. Continuing..."
