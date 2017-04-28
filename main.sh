@@ -44,13 +44,6 @@
         WithSU=false
       fi
 
-      if [[ $WithSU = true ]]; then
-        export WITH_SU=true
-      else
-#       override eventually existing environment variable
-        export WITH_SU=false
-      fi
-
       SkipOTA=false
       if [[ -z $IncrementalOTA ]]; then
         IncrementalOTA=false
